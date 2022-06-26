@@ -72,21 +72,21 @@ public class HomeFragment extends Fragment {
                 String searchItem = etFragmentSearch.getText().toString();
                 //Toast.makeText(getContext(),"This is the search item " + searchItem,Toast.LENGTH_SHORT).show();
                 if (searchItem != null){
-                    requestProducts(searchItem);
+                    requestAmazonProducts(searchItem);
                 }
 
             }
         });
     }
 
-    private void requestProducts(String searchItem){
+    private void requestAmazonProducts(String searchItem){
         String apiEndpoint = "https://amazon24.p.rapidapi.com/api/product?categoryID=aps&keyword=" + searchItem + "&country=US&page=1";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
         headers.put("X-RapidAPI-Key","60a5fa691emshe919d45f1178b45p1b5687jsnd340457a2d74");
         headers.put("X-RapidAPI-Host","amazon24.p.rapidapi.com");
-
+        itemList.clear();
         client.get(apiEndpoint, headers, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {

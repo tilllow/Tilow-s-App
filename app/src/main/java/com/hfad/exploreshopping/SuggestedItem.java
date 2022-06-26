@@ -52,6 +52,7 @@ public class SuggestedItem {
     }
 
     String processRatings(String ratings){
+
         return null;
     }
 }
