@@ -5,12 +5,16 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_cart_item.xml" value="0.9369791666666667" />
         <entry key="app/src/main/res/layout/activity_individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.38958333333333334" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.27293064876957496" />
+        <entry key="app/src/main/res/layout/activity_purchased_items.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1889564336372847" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.17604166666666668" />
+        <entry key="app/src/main/res/layout/fragment_cart_items.xml" value="0.9510416666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.573822463768116" />
+        <entry key="app/src/main/res/layout/fragment_order.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.75" />
       </map>

@@ -1,11 +1,18 @@
 package com.hfad.exploreshopping;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @ParseClassName("PurchaseItem")
 public class PurchaseItem extends ParseObject {
+    public static final String TAG = "PurchaseItem";
     public static final String KEY_PRODUCT_NAME = "productName";
     public static final String KEY_IMAGE_URL = "productImageUrl";
     public static final String KEY_PRODUCT_PRICE = "productPrice";
@@ -32,7 +39,14 @@ public class PurchaseItem extends ParseObject {
         return getString(KEY_PRODUCT_NAME);
     }
 
-    public String getProductPrice(String description){return getString(KEY_PRODUCT_PRICE);}
+    public String getProductPrice(){return getString(KEY_PRODUCT_PRICE);}
+
+    public String getPurchaseDate(){
+        Date purchaseDate = getCreatedAt();
+        SimpleDateFormat fmtOut = new SimpleDateFormat("MM/dd/yyyy");
+        String date = fmtOut.format(purchaseDate);
+        return date;
+    }
 
     public  String getProductOriginalPrice(){
         return getString(KEY_PRODUCT_ORIGINAL_PRICE);

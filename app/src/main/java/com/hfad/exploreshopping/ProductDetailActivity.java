@@ -98,13 +98,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
 
-            String itemId;
-
             @Override
             public void onClick(View v) {
-
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                //currentUser
                 CartItem cartItem = new CartItem(suggestedItem);
                 cartItem.saveInBackground(new SaveCallback() {
                     @Override

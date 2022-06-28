@@ -32,7 +32,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import fragments.CartItemsFragment;
 import fragments.HomeFragment;
+import fragments.PurchasedItemsFragment;
 import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,16 +57,16 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuitem.getItemId()) {
                     case R.id.action_home:
                         // TODO: update fragment
-                        Toast.makeText(MainActivity.this,"Items should load here",Toast.LENGTH_SHORT).show();
                         fragment = new HomeFragment();
                         break;
                     case R.id.action_cart:
-                        Toast.makeText(MainActivity.this,"Cart!",Toast.LENGTH_SHORT).show();
-                        fragment = new HomeFragment();
+                        fragment = new CartItemsFragment();
                         break;
                     case R.id.action_profile:
-                        Toast.makeText(MainActivity.this,"Profile!",Toast.LENGTH_SHORT).show();
                         fragment = new HomeFragment();
+                        break;
+                    case R.id.action_purchases:
+                        fragment = new PurchasedItemsFragment();
                         break;
                     default:
                         break;

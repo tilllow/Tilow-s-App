@@ -5,7 +5,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-@ParseClassName("CartItems")
+@ParseClassName("CartItem")
 public class CartItem extends ParseObject {
     public static final String KEY_PRODUCT_NAME = "productName";
     public static final String KEY_PRODUCT_PRICE = "productPrice";
@@ -18,7 +18,7 @@ public class CartItem extends ParseObject {
     public CartItem(){}
 
     public CartItem(SuggestedItem suggestedItem){
-        // Add to the purchaseItems
+        //Add to the cartItems
         setProductName(suggestedItem.getProductName());
         setProductDetailUrl(suggestedItem.getProductDetailUrl());
         setProductImageUrl(suggestedItem.getProductImageUrl());
@@ -31,7 +31,7 @@ public class CartItem extends ParseObject {
         return getString(KEY_PRODUCT_NAME);
     }
 
-    public String getProductPrice(String description){return getString(KEY_PRODUCT_PRICE);}
+    public String getProductPrice(){return getString(KEY_PRODUCT_PRICE);}
 
     public  String getProductOriginalPrice(){
         return getString(KEY_PRODUCT_ORIGINAL_PRICE);

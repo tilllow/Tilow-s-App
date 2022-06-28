@@ -1,4 +1,4 @@
-package com.hfad.exploreshopping;
+package adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseFile;
+import com.hfad.exploreshopping.ProductDetailActivity;
+import com.hfad.exploreshopping.R;
+import com.hfad.exploreshopping.SuggestedItem;
 
 import org.parceler.Parcels;
 
@@ -65,7 +67,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
                     SuggestedItem suggestedItem = itemsList.get(pos);
-                    Intent i = new Intent(context,ProductDetailActivity.class);
+                    Intent i = new Intent(context, ProductDetailActivity.class);
                     i.putExtra("EXTRA_ITEM", Parcels.wrap(suggestedItem));
                     context.startActivity(i);
                 }
