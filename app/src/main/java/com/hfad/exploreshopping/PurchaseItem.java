@@ -35,6 +35,15 @@ public class PurchaseItem extends ParseObject {
         setProductPrice(suggestedItem.getProductPrice());
     }
 
+    public PurchaseItem(CartItem cartItem){
+        setProductName(cartItem.getProductName());
+        setProductDetailUrl(cartItem.getProductDetailUrl());
+        setProductImageUrl(cartItem.getProductImageUrl());
+        setProductOriginalPrice(cartItem.getProductOriginalPrice());
+        setProductRatings(cartItem.getProductRatings());
+        setProductPrice(cartItem.getProductPrice());
+    }
+
     public String getProductName(){
         return getString(KEY_PRODUCT_NAME);
     }

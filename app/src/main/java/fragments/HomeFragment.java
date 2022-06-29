@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String searchItem = etFragmentSearch.getText().toString();
-                //Toast.makeText(getContext(),"This is the search item " + searchItem,Toast.LENGTH_SHORT).show();
                 if (searchItem != null){
                     requestAmazonProducts(searchItem);
                 }
@@ -107,10 +106,8 @@ public class HomeFragment extends Fragment {
                         SuggestedItem suggestedItem = new SuggestedItem(productName,productImageUrl,productPrice,productDetailUrl,productOriginalPrice,productRatings);
                         items.add(suggestedItem);
                     }
-                    Log.d(TAG,"This is the item's length" + items.size());
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
-                    //Log.d(TAG,productDescription);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

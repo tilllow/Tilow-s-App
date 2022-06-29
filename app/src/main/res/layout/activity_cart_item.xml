@@ -68,7 +68,19 @@
         android:layout_marginTop="5dp"
         android:text="Buy now"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/tvCartProductRatings" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCartRemove"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:text="Remove"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnCartItemBuy"
         app:layout_constraintTop_toBottomOf="@+id/tvCartProductRatings" />
 </androidx.constraintlayout.widget.ConstraintLayout>

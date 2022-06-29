@@ -87,6 +87,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         currentUser.add("ItemsPurchased",purchaseItem);
                         currentUser.saveInBackground();
                         Toast.makeText(ProductDetailActivity.this, "Purchase successful",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
@@ -112,6 +113,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         currentUser.add("CartItems",cartItem);
                         currentUser.saveInBackground();
                         Toast.makeText(ProductDetailActivity.this, "Added to cart successfully",Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
