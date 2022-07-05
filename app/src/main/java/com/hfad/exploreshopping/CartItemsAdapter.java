@@ -1,7 +1,6 @@
-package adapters;
+package com.hfad.exploreshopping;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.hfad.exploreshopping.CartItem;
-import com.hfad.exploreshopping.PurchaseItem;
-import com.hfad.exploreshopping.R;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

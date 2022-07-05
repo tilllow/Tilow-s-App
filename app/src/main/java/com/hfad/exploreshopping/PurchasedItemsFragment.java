@@ -1,11 +1,10 @@
-package fragments;
+package com.hfad.exploreshopping;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hfad.exploreshopping.PurchaseItem;
-import adapters.PurchasedItemsAdapter;
+import com.hfad.exploreshopping.PurchasedItemsAdapter;
 import com.hfad.exploreshopping.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -56,7 +55,7 @@ public class PurchasedItemsFragment extends Fragment {
         purchasedItemsAdapter = new PurchasedItemsAdapter(getContext(),purchasedItemsList);
         rvPurchasedItems.setAdapter(purchasedItemsAdapter);
         rvPurchasedItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvPurchasedItems.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        //rvPurchasedItems.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         populatePurchasedItemsList();
     }
 

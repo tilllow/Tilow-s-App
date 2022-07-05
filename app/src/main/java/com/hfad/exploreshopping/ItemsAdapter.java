@@ -1,10 +1,11 @@
-package adapters;
+package com.hfad.exploreshopping;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.hfad.exploreshopping.ProductDetailActivity;
-import com.hfad.exploreshopping.R;
-import com.hfad.exploreshopping.SuggestedItem;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 
 import org.parceler.Parcels;
 
@@ -77,6 +77,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         public void bind(SuggestedItem item) {
             tvProductName.setText(item.getProductName());
             tvProductPrice.setText(item.getProductPrice());
+
             Glide.with(context).load(item.getProductImageUrl()).into(ivProductImage);
         }
     }
@@ -89,5 +90,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         itemsList.addAll(suggestedItems);
         notifyDataSetChanged();
         //Toast.makeText(context, "Adapter has been notified successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    public void setFilteredList(List<SuggestedItem> filteredList){
+        this.itemsList = filteredList;
+        notifyDataSetChanged();
     }
 }

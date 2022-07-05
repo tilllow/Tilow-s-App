@@ -1,43 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity"
-    android:orientation="vertical"
-    android:layout_margin="16dp">
+    android:background="@drawable/sign_up_page_background"
+    tools:context=".SignUpActivity">
+
+    <TextView
+        android:id="@+id/tvLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:textColor="@color/background_color_light"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
     <EditText
-        android:id="@+id/etNewUsername"
-        android:layout_width="match_parent"
+        android:id="@+id/etUsername"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/ic_person"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Create a username"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/background_color_light"
+        android:textColorHint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLogo" />
 
     <EditText
-        android:id="@+id/etNewUserPassword"
-        android:layout_width="match_parent"
+        android:id="@+id/etUserPassword"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/ic_email"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Create a password"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:hint="Email"
+        android:inputType="textPersonName"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/background_color_light"
+        android:textColorHint="@color/background_color_light"
+        app:layout_constraintEnd_toEndOf="@+id/etUsername"
+        app:layout_constraintStart_toStartOf="@+id/etUsername"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
 
     <EditText
-        android:id="@+id/etConfirmPassword"
-        android:layout_width="match_parent"
+        android:id="@+id/etInputUserPassword"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/ic_lock"
+        android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Confirm password"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:hint="Password"
+        android:inputType="textPersonName"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/background_color_light"
+        android:textColorHint="@color/background_color_light"
+        app:layout_constraintEnd_toEndOf="@+id/etUserPassword"
+        app:layout_constraintStart_toStartOf="@+id/etUserPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etUserPassword" />
 
-    <Button
-        android:id="@+id/btnCreateAccount"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/etInputConfirmPassword"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Create account" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
+        android:drawableLeft="@drawable/ic_lock"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPersonName"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/background_color_light"
+        android:textColorHint="@color/background_color_light"
+        app:layout_constraintEnd_toEndOf="@+id/etInputUserPassword"
+        app:layout_constraintStart_toStartOf="@+id/etInputUserPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etInputUserPassword" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/btn_bg"
+        android:elevation="5dp"
+        android:text="SignUp"
+        app:layout_constraintEnd_toEndOf="@+id/etInputConfirmPassword"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/etInputConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etInputConfirmPassword" />
+
+    <TextView
+        android:id="@+id/tvHasAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Already have an account?"
+        android:textColor="@color/background_color_light"
+        app:layout_constraintEnd_toEndOf="@+id/btnSignUp"
+        app:layout_constraintStart_toStartOf="@+id/btnSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

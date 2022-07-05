@@ -1,9 +1,10 @@
-package fragments;
+package com.hfad.exploreshopping;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -17,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hfad.exploreshopping.FragmentEditProfile;
 import com.hfad.exploreshopping.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -88,16 +90,21 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            sbThemeSwitch.setChecked(false);
+        } else {
+            sbThemeSwitch.setChecked(true);
+        }
+
+
         sbThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    tvThemeName.setText("Light Mode");
-                    // TODO : set behavior for the light mode.
-                    return;
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
-                // TODO : set behavior for dark mode
-                tvThemeName.setText("Dark Mode");
             }
         });
     }

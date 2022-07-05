@@ -12,13 +12,18 @@ public class SuggestedItem {
     private String productImageUrl;
     private String productPrice;
     private String productDetailUrl;
-    private String productOriginalPrice;
-    private String productRatings;
+    private String productOriginalPrice = "null";
+    private String productRatings = "No ratings available";
 
     public SuggestedItem(){
     }
 
     public SuggestedItem(String productName, String productImageUrl, String productPrice, String productDetailUrl, String productOriginalPrice, String productRatings) {
+        if (productOriginalPrice != null){
+            this.productOriginalPrice = productOriginalPrice;
+        } if (productRatings != null){
+            this.productRatings = productRatings;
+        }
         this.productName = productName;
         this.productImageUrl = productImageUrl;
         this.productPrice = productPrice;

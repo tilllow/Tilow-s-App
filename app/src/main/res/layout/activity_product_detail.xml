@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Product Name"
+        android:textColor="@color/color_text"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +35,7 @@
         android:autoLink="all"
         android:linksClickable="true"
         android:text="Product Description"
+        android:textColor="@color/color_subtext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProductCurrentPricePd" />
@@ -46,16 +48,14 @@
         android:textColor="@color/design_default_color_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rbProductRatingPd" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProductRatings" />
 
-    <RatingBar
-        android:id="@+id/rbProductRatingPd"
-        style="?android:attr/ratingBarStyleSmall"
+    <TextView
+        android:id="@+id/tvProductRatings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:stepSize="0.1"
+        android:text="No rating available"
+        android:textColor="@color/color_subtext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProductImagePd" />
 
@@ -64,32 +64,45 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="ProductNewPrice"
+        android:textColor="@color/color_subtext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProductOldPricePd" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnPurchaseItem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/golden_yellow"
-        android:text="Purchase Item now"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardMaxElevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductDescriptionPd" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProductDescriptionPd">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAddToCart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/oxford_gray"
-        android:text="Add to my cart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPurchaseItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/purchase_item_background_color"
+            android:text="Purchase Item now"
+            android:textColor="@color/color_text" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPurchaseItem" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_subtext"
+            android:text="Add to my cart"
+            android:textColor="@color/color_text" />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

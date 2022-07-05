@@ -1,4 +1,4 @@
-package fragments;
+package com.hfad.exploreshopping;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -26,11 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.hfad.exploreshopping.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 

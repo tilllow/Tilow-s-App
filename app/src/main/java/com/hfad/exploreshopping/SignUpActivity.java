@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.Parse;
@@ -29,10 +30,11 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        etUsername = findViewById(R.id.etNewUsername);
-        etPassword = findViewById(R.id.etNewUserPassword);
-        etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        btnCreateAccount = findViewById(R.id.btnCreateAccount);
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etInputUserPassword);
+        etConfirmPassword = findViewById(R.id.etInputConfirmPassword);
+        btnCreateAccount = findViewById(R.id.btnSignUp);
+        TextView tvHasAccount = findViewById(R.id.tvHasAccount);
 
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
 
@@ -70,6 +72,14 @@ public class SignUpActivity extends AppCompatActivity {
                 } catch (Exception e){
                     Log.e(TAG,"Login wasn't successful : ", e);
                 }
+            }
+        });
+
+        tvHasAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignUpActivity.this,SignInActivity.class);
+                startActivity(i);
             }
         });
     }

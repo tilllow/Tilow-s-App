@@ -1,4 +1,4 @@
-package fragments;
+package com.hfad.exploreshopping;
 
 import android.os.Bundle;
 
@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hfad.exploreshopping.CartItem;
-import com.hfad.exploreshopping.PurchaseItem;
 import com.hfad.exploreshopping.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -28,8 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import adapters.CartItemsAdapter;
-import adapters.PurchasedItemsAdapter;
+import com.hfad.exploreshopping.CartItemsAdapter;
 
 public class CartItemsFragment extends Fragment {
 
