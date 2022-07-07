@@ -117,11 +117,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void requestAmazonProducts(String searchItem){
-        String apiEndpoint = "https://amazon24.p.rapidapi.com/api/product?categoryID=aps&keyword=" + searchItem + "&country=US&page=1";
+        String apiEndpoint = "https://amazon24.p.rapidapi.com/api/product";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
+        params.put("categoryID","aps");
+        params.put("keyword",searchItem);
+        params.put("country","US");
+        params.put("page",1);
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key","aa616bd4fdmshf4e3b2558774cdcp18d333jsnab818655e853");
+        headers.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
         headers.put("X-RapidAPI-Host","amazon24.p.rapidapi.com");
         itemList.clear();
         client.get(apiEndpoint, headers, params, new JsonHttpResponseHandler() {
@@ -166,7 +170,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Toast.makeText(getContext(),"Your request could not be completed. Please try again",Toast.LENGTH_SHORT);
+                //Toast.makeText(getContext(),"Your request could not be completed. Please try again",Toast.LENGTH_SHORT);
                 Log.e(TAG, "OnFailure",throwable);
                 progressBar.setVisibility(View.GONE);
             }

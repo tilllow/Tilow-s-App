@@ -14,12 +14,14 @@
         <entry key="app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.102" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_email_dark.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/progress_bar.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_cart_item.xml" value="0.9369791666666667" />
         <entry key="app/src/main/res/layout/activity_individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.38958333333333334" />
-        <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.8059880239520958" />
+        <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_purchased_items.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.5" />

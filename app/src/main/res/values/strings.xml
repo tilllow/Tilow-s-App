@@ -2,4 +2,10 @@
     <string name="app_name">ExploreShopping</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">kdUIsbUAQc2QC9Edn4hGXibANxh8jjOOK16k2JUM</string>
+    <string name="back4app_client_key">QtOefaGRl5nPkL74kRmq3t0JGmwOarGNMCYaAwhI</string>
+    <string name="facebook_app_id">5350840504975085</string>
+    <string name="facebook_client_token">ebcf056f9dbe68c6916e25c7b95d6d05</string>
+    <string name="X_Rapid_API_key">11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a</string>
 </resources>

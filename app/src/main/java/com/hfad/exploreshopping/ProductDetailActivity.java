@@ -31,6 +31,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView tvProductCurrentPricePd;
     ImageView ivProductImagePd;
     TextView tvProductRatings;
+    TextView tvProductOldPriceText;
+    TextView tvProductRatingsText;
+
     AppCompatButton btnPurchaseItem;
     AppCompatButton btnAddToCart;
 
@@ -47,6 +50,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductRatings = findViewById(R.id.tvProductRatings);
         btnAddToCart = findViewById(R.id.btnAddToCart);
         btnPurchaseItem = findViewById(R.id.btnPurchaseItem);
+        tvProductOldPriceText = findViewById(R.id.tvProductOldPriceText);
+        tvProductRatingsText = findViewById(R.id.tvProductRatingsText);
 
         SuggestedItem suggestedItem = Parcels.unwrap(getIntent().getParcelableExtra("EXTRA_ITEM"));
 
@@ -60,16 +65,21 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductNamePd.setText(productName);
         tvProductDescriptionPd.setText(productDetailUrl);
 
-        if (!(productRatings == null) && !(productRatings == "null")){
+        if (productRatings == null || productRatings.length() == 0 || productRatings == "null"){
+            tvProductRatings.setVisibility(View.GONE);
+            tvProductRatingsText.setVisibility(View.GONE);
+        } else{
             tvProductRatings.setText(productRatings);
         }
 
-        if (productOriginalPrice == null || productOriginalPrice.equals("null")){
+        if (productOriginalPrice == null || productOriginalPrice.equals("null") || productOriginalPrice == ""){
+            Log.d(TAG,"The value of product ratings is : " + productRatings);
             tvProductOldPricePd.setVisibility(View.GONE);
+            tvProductOldPriceText.setVisibility(View.GONE);
         }else{
-            tvProductOldPricePd.setText("Previous product price : " + productOriginalPrice);
+            tvProductOldPricePd.setText(productOriginalPrice);
         }
-        tvProductCurrentPricePd.setText("Current product price : " + productPrice);
+        tvProductCurrentPricePd.setText(productPrice);
         if (productImageUrl != null){
             Glide.with(this).load(productImageUrl).into(ivProductImagePd);
         }

@@ -47,9 +47,17 @@ public class CartItem extends ParseObject {
 
     public void setProductPrice(String price){put(KEY_PRODUCT_PRICE,price);}
 
-    public void setProductOriginalPrice(String price){put(KEY_PRODUCT_ORIGINAL_PRICE,price);}
+    public void setProductOriginalPrice(String price){
+        if (price == null){
+            return;
+        }
+        put(KEY_PRODUCT_ORIGINAL_PRICE,price);}
 
-    public void setProductRatings(String ratings){put(KEY_PRODUCT_RATINGS,ratings);}
+    public void setProductRatings(String ratings){
+        if (ratings == null || ratings == "null"){
+            return;
+        }
+        put(KEY_PRODUCT_RATINGS,ratings);}
 
     public void setProductDetailUrl(String detailUrl){put(KEY_PRODUCT_DETAIL_URL,detailUrl);}
 

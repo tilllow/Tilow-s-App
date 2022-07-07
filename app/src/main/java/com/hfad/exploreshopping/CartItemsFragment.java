@@ -64,6 +64,9 @@ public class CartItemsFragment extends Fragment {
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray itemsInCart = currentUser.getJSONArray("CartItems");
+        if (itemsInCart == null){
+            return;
+        }
         for (int i = 0; i < itemsInCart.length();++i){
             try{
                 JSONObject cartItem = (JSONObject) itemsInCart.get(i);

@@ -61,9 +61,13 @@ public class PurchasedItemsFragment extends Fragment {
 
     private void populatePurchasedItemsList(){
         ParseUser currentUser = ParseUser.getCurrentUser();
-        List<PurchaseItem> temp = null;
+        List<PurchaseItem> temp ;
         JSONArray itemsPurchased = currentUser.getJSONArray("ItemsPurchased");
         temp = new ArrayList<>();
+
+        if (itemsPurchased == null){
+            return;
+        }
         for (int i = 0; i < itemsPurchased.length();++i){
             try{
 

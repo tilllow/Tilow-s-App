@@ -37,6 +37,7 @@ public class StoreActivity extends AppCompatActivity {
     private ProgressBar pbStoreItemLoading;
     private SearchView svSearchStore;
     TextView tvStoreWelcomeMessage;
+    TextView tvAmazonTodayDeals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class StoreActivity extends AppCompatActivity {
 
         itemList = new ArrayList<>();
         tvStoreWelcomeMessage = findViewById(R.id.tvStoreWelcomeMessage);
+        tvAmazonTodayDeals = findViewById(R.id.tvAmazonTodayDeals);
         svSearchStore = findViewById(R.id.svSearchStore);
         rvNikeShoes = findViewById(R.id.rvNikeShoes);
         pbStoreItemLoading = findViewById(R.id.pbStoreItemLoading);
@@ -56,35 +58,90 @@ public class StoreActivity extends AppCompatActivity {
 
 
         switch (position){
-            case 0: requestNikeProducts();
-                    tvStoreWelcomeMessage.setText("Welcome to the Nike Store");
+            case 0: tvStoreWelcomeMessage.setText("Welcome to the Nike Store");
+                    svSearchStore.setQueryHint("Search Nike Shoes here...");
+                    requestNikeProducts();
+                svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterList(newText);
+                        return true;
+                    }
+                });
                     break;
             case 1:
                 requestAsosProducts();
                 tvStoreWelcomeMessage.setText("Welcome to the Asos Store");
+                svSearchStore.setQueryHint("Search Asos products here...");
+                svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterList(newText);
+                        return true;
+                    }
+                });
                 break;
             case 2:
                 tvStoreWelcomeMessage.setText("Welcome to the Amazon Store");
+                svSearchStore.setQueryHint("Search Amazon products here...");
+                tvAmazonTodayDeals.setVisibility(View.VISIBLE);
                 requestAmazonTodayDeals();
+
+                svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        requestAmazonProducts(query);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
+
+                });
                 break;
             case 3:
                 tvStoreWelcomeMessage.setText("Welcome to the Shoes Collection Store");
+                svSearchStore.setQueryHint("Search your shoes here...");
                 requestShoesCollections();
+                svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterList(newText);
+                        return true;
+                    }
+                });
                 break;
         }
 
-        svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterList(newText);
-                return true;
-            }
-        });
+//        svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                filterList(newText);
+//                return true;
+//            }
+//        });
     }
 
     private void filterList(String text) {
@@ -312,5 +369,59 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void requestAmazonProducts(String searchWord){
+
+        String amazonApiEndpoint = "https://amazon60.p.rapidapi.com/search/" + searchWord + "?api_key=e4037415b3d58b93e689d4ed83405ffb";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams requestParams = new RequestParams();
+        RequestHeaders requestHeaders = new RequestHeaders();
+        requestHeaders.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        requestHeaders.put("X-RapidAPI-Host","amazon60.p.rapidapi.com");
+        itemList.clear();
+        pbStoreItemLoading.setVisibility(View.VISIBLE);
+
+        client.get(amazonApiEndpoint, requestHeaders, requestParams, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                JSONObject jsonObject = json.jsonObject;
+
+
+                try{
+                    List<SuggestedItem> items = new ArrayList<>();
+                    JSONArray products = jsonObject.getJSONArray("results");
+                    for (int i = 0; i < products.length();++i){
+                        JSONObject product = (JSONObject) products.get(i);
+
+                        String productName = product.getString("name");
+                        String productImageUrl = product.getString("image");
+                        String productDetailUrl = product.getString("url");
+                        String productPrice = product.getString("price_string");
+                        String productRatings = String.valueOf(product.getInt("stars")) ;
+
+                        SuggestedItem item = new SuggestedItem(productName,productImageUrl,productPrice,productDetailUrl,null,productRatings);
+                        items.add(item);
+                    }
+                    itemList.addAll(items);
+                    adapter.notifyDataSetChanged();
+                    pbStoreItemLoading.setVisibility(View.INVISIBLE);
+                    tvAmazonTodayDeals.setText("Showing results for " + searchWord);
+
+                } catch(JSONException e){
+                    pbStoreItemLoading.setVisibility(View.INVISIBLE);
+                    e.printStackTrace();
+                }
+
+
+                Log.d(TAG,"This response passed succesfully");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                pbStoreItemLoading.setVisibility(View.INVISIBLE);
+                Log.i(TAG,"The request has failed",throwable);
+            }
+        });
     }
 }
