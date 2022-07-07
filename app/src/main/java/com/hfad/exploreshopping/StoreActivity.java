@@ -402,6 +402,7 @@ public class StoreActivity extends AppCompatActivity {
 
                         SuggestedItem item = new SuggestedItem(productName,productImageUrl,productPrice,productDetailUrl,null,productRatings);
                         items.add(item);
+                        // Made some new changes to the app
                     }
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
