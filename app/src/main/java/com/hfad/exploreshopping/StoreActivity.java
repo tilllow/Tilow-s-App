@@ -414,7 +414,8 @@ public class StoreActivity extends AppCompatActivity {
                 }
 
 
-                Log.d(TAG,"This response passed succesfully");
+                Log.d(TAG,"This response passed successfully");
+                // Random comment
             }
 
             @Override
