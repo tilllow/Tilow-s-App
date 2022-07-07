@@ -381,6 +381,7 @@ public class StoreActivity extends AppCompatActivity {
         requestHeaders.put("X-RapidAPI-Host","amazon60.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
+        // new changes
 
         client.get(amazonApiEndpoint, requestHeaders, requestParams, new JsonHttpResponseHandler() {
             @Override
