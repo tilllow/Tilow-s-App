@@ -235,6 +235,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateViewedItems(){
+        //
         ParseUser currentUser = ParseUser.getCurrentUser();
         List<SuggestedItem> temp ;
         JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
