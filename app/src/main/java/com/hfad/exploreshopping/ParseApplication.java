@@ -19,12 +19,8 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(PurchaseItem.class);
         ParseObject.registerSubclass(CartItem.class);
-//        Parse.initialize(new Parse.Configuration.Builder(this)
-//                .applicationId("DPIvDaNRinPNwVJNaPSKb8Gq00XoT9tUQ7Rr9FlL")
-//                .clientKey("uWd0UMir256IYwXxcw94K61vGfsYwkzDgz5X1vpD")
-//                .server("https://parseapi.back4app.com")
-//                .build()
-//        );
+        ParseObject.registerSubclass(ClickedItem.class);
+
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("kdUIsbUAQc2QC9Edn4hGXibANxh8jjOOK16k2JUM")
                 .clientKey("QtOefaGRl5nPkL74kRmq3t0JGmwOarGNMCYaAwhI")

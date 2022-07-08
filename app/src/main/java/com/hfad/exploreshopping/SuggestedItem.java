@@ -3,7 +3,12 @@ package com.hfad.exploreshopping;
 
 import android.os.Parcelable;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import org.parceler.Parcel;
+
+
 
 @Parcel
 public class SuggestedItem {
@@ -16,6 +21,15 @@ public class SuggestedItem {
     private String productRatings = "No ratings available";
 
     public SuggestedItem(){
+    }
+
+    public SuggestedItem(ClickedItem clickedItem){
+        this.productName = clickedItem.getProductName();
+        this.productDetailUrl = clickedItem.getProductDetailUrl();
+        this.productImageUrl = clickedItem.getProductImageUrl();
+        this.productOriginalPrice = clickedItem.getProductOriginalPrice();
+        this.productRatings = clickedItem.getProductRatings();
+        this.productPrice = clickedItem.getProductPrice();
     }
 
     public SuggestedItem(String productName, String productImageUrl, String productPrice, String productDetailUrl, String productOriginalPrice, String productRatings) {

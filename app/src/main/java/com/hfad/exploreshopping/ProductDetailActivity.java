@@ -33,9 +33,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView tvProductRatings;
     TextView tvProductOldPriceText;
     TextView tvProductRatingsText;
+    Boolean productInCartOrPurchased = false;
 
     AppCompatButton btnPurchaseItem;
     AppCompatButton btnAddToCart;
+    SuggestedItem suggestedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductOldPriceText = findViewById(R.id.tvProductOldPriceText);
         tvProductRatingsText = findViewById(R.id.tvProductRatingsText);
 
-        SuggestedItem suggestedItem = Parcels.unwrap(getIntent().getParcelableExtra("EXTRA_ITEM"));
+        suggestedItem = Parcels.unwrap(getIntent().getParcelableExtra("EXTRA_ITEM"));
 
         String productName = suggestedItem.getProductName();
         String productImageUrl = suggestedItem.getProductImageUrl();
@@ -65,24 +67,25 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductNamePd.setText(productName);
         tvProductDescriptionPd.setText(productDetailUrl);
 
-        if (productRatings == null || productRatings.length() == 0 || productRatings == "null"){
+        if (productRatings == null || productRatings.length() == 0 || productRatings == "null") {
             tvProductRatings.setVisibility(View.GONE);
             tvProductRatingsText.setVisibility(View.GONE);
-        } else{
+        } else {
             tvProductRatings.setText(productRatings);
         }
 
-        if (productOriginalPrice == null || productOriginalPrice.equals("null") || productOriginalPrice == ""){
-            Log.d(TAG,"The value of product ratings is : " + productRatings);
+        if (productOriginalPrice == null || productOriginalPrice.equals("null") || productOriginalPrice == "") {
+            Log.d(TAG, "The value of product ratings is : " + productRatings);
             tvProductOldPricePd.setVisibility(View.GONE);
             tvProductOldPriceText.setVisibility(View.GONE);
-        }else{
+        } else {
             tvProductOldPricePd.setText(productOriginalPrice);
         }
         tvProductCurrentPricePd.setText(productPrice);
-        if (productImageUrl != null){
+        if (productImageUrl != null) {
             Glide.with(this).load(productImageUrl).into(ivProductImagePd);
         }
+
 
         btnPurchaseItem.setOnClickListener(new View.OnClickListener() {
 
@@ -97,18 +100,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                 purchaseItem.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e != null){
-                            Toast.makeText(ProductDetailActivity.this,"Purchase unsuccessful",Toast.LENGTH_SHORT).show();
+                        if (e != null) {
+                            Toast.makeText(ProductDetailActivity.this, "Purchase unsuccessful", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        currentUser.add("ItemsPurchased",purchaseItem);
+                        currentUser.add("ItemsPurchased", purchaseItem);
                         currentUser.saveInBackground();
-                        Toast.makeText(ProductDetailActivity.this, "Purchase successful",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProductDetailActivity.this, "Purchase successful", Toast.LENGTH_SHORT).show();
+                        productInCartOrPurchased = true;
                         finish();
                     }
                 });
-
-
 
 
             }
@@ -123,21 +125,40 @@ public class ProductDetailActivity extends AppCompatActivity {
                 cartItem.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e != null){
-                            Toast.makeText(ProductDetailActivity.this,"Adding to cart unsuccessful",Toast.LENGTH_SHORT).show();
+                        if (e != null) {
+                            Toast.makeText(ProductDetailActivity.this, "Adding to cart unsuccessful", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        currentUser.add("CartItems",cartItem);
+                        currentUser.add("CartItems", cartItem);
                         currentUser.saveInBackground();
-                        Toast.makeText(ProductDetailActivity.this, "Added to cart successfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProductDetailActivity.this, "Added to cart successfully", Toast.LENGTH_SHORT).show();
+                        productInCartOrPurchased = true;
                         finish();
                     }
                 });
-
-
-
-
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        if (productInCartOrPurchased.equals(false)) {
+            ClickedItem clickedItem = new ClickedItem(suggestedItem);
+            clickedItem.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null){
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.add("clickedItems",clickedItem);
+                        currentUser.saveInBackground();
+                    } else{
+                        Log.d(TAG,"Unable to add item to Parse");
+                    }
+                }
+            });
+        } else{
+            Log.d(TAG,"Unable to populate to Parse");
+        }
+            super.onDestroy();
+        }
 }

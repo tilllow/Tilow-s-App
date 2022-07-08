@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -31,6 +32,9 @@ import com.hfad.exploreshopping.ItemsAdapter;
 import com.hfad.exploreshopping.R;
 import com.hfad.exploreshopping.Store;
 import com.hfad.exploreshopping.SuggestedItem;
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,8 +46,10 @@ import java.util.List;
 import okhttp3.Headers;
 
 public class HomeFragment extends Fragment {
+
     public static final String TAG = "HomeFragment";
     private List<SuggestedItem> itemList;
+    private List<ViewedItem> recentlyViewed;
     private ItemsAdapter adapter;
     private RecyclerView rvFragmentItems;
     private SearchView svSearchProduct;
@@ -68,6 +74,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         rvFragmentItems = view.findViewById(R.id.rvFragmentItems);
         svSearchProduct = view.findViewById(R.id.svSearchProduct);
@@ -107,7 +114,7 @@ public class HomeFragment extends Fragment {
         itemList = new ArrayList<>();
         adapter = new ItemsAdapter(getContext(),itemList);
         rvFragmentItems.setAdapter(adapter);
-        rvFragmentItems.setLayoutManager(new GridLayoutManager(getContext(),2));
+        rvFragmentItems.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void launchStoreActivity(int pos) {
@@ -117,6 +124,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void requestAmazonProducts(String searchItem){
+
         String apiEndpoint = "https://amazon24.p.rapidapi.com/api/product";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -216,6 +224,36 @@ public class HomeFragment extends Fragment {
             tvStoreName.setText(storeFiltered.get(position).getName());
             tvStoreDescription.setText(storeFiltered.get(position).getDescription());
             return view;
+        }
+    }
+
+    private void populateUserSearchField(String search){
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put("searchItems",search);
+        currentUser.saveInBackground();
+    }
+
+    private void populateViewedItems(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        List<SuggestedItem> temp ;
+        JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
+        temp = new ArrayList<>();
+
+        if (itemsClicked == null){
+            return;
+        }
+        for (int i = 0; i < itemsClicked.length();++i){
+            try{
+
+                ClickedItem clickedItem = (ClickedItem) itemsClicked.get(i);
+                SuggestedItem suggestedItem = new SuggestedItem(clickedItem);
+                temp.add(suggestedItem);
+            } catch (Exception e){
+                // TODO: Decide how to handle this exception later
+            }
+            itemList.addAll(temp);
+            adapter.notifyDataSetChanged();
         }
     }
 }
