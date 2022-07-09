@@ -1,15 +1,14 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
     tools:context=".HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="0dp">
 
         <ProgressBar
@@ -45,29 +44,38 @@
             android:id="@+id/rvFragmentItems"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/const_layout"
             app:layout_constraintEnd_toEndOf="@id/const_layout"
             app:layout_constraintStart_toStartOf="@id/const_layout"
-            app:layout_constraintTop_toBottomOf="@+id/gvStores">
+            app:layout_constraintTop_toBottomOf="@+id/tvRecentlyViewed">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <GridView
             android:id="@+id/gvStores"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
             android:layout_marginTop="5dp"
             android:horizontalSpacing="5dp"
             android:numColumns="2"
             android:verticalSpacing="5dp"
-            app:layout_constraintBottom_toBottomOf="@id/const_layout"
             app:layout_constraintEnd_toEndOf="@id/const_layout"
             app:layout_constraintStart_toStartOf="@id/const_layout"
             app:layout_constraintTop_toBottomOf="@+id/svSearchProduct" />
+
+        <TextView
+            android:id="@+id/tvRecentlyViewed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recently Viewed Items"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gvStores" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

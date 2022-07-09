@@ -32,8 +32,11 @@ import com.hfad.exploreshopping.ItemsAdapter;
 import com.hfad.exploreshopping.R;
 import com.hfad.exploreshopping.Store;
 import com.hfad.exploreshopping.SuggestedItem;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -41,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -59,6 +63,7 @@ public class HomeFragment extends Fragment {
     private String names[] = {"Nike Store","Asos Store","Amazon Store","Shoes collection"};
     private String description[] = {"This is the Nike Store","This is the Asos Store","This is the Amazon Store","This is the Shoe Store"};
     private List<Store> storeList = new ArrayList<>();
+    private TextView tvRecentlyViewed;
     private CustomAdapter customAdapter;
 
 
@@ -80,6 +85,7 @@ public class HomeFragment extends Fragment {
         svSearchProduct = view.findViewById(R.id.svSearchProduct);
         progressBar = view.findViewById(R.id.progressBar);
         gvStores = view.findViewById(R.id.gvStores);
+        tvRecentlyViewed = view.findViewById(R.id.tvRecentlyViewed);
 
         for (int i = 0; i < names.length; ++i){
             Store store = new Store(names[i],description[i],images[i]);
@@ -114,7 +120,8 @@ public class HomeFragment extends Fragment {
         itemList = new ArrayList<>();
         adapter = new ItemsAdapter(getContext(),itemList);
         rvFragmentItems.setAdapter(adapter);
-        rvFragmentItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvFragmentItems.setLayoutManager(new GridLayoutManager(getContext(),2));
+        populateViewedItems();
     }
 
     private void launchStoreActivity(int pos) {
@@ -235,26 +242,46 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateViewedItems(){
-        //
         ParseUser currentUser = ParseUser.getCurrentUser();
-        List<SuggestedItem> temp ;
+        List<PurchaseItem> temp ;
         JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
         temp = new ArrayList<>();
 
         if (itemsClicked == null){
             return;
         }
+
+        HashSet<String> productImageHashSet = new HashSet<String>();
         for (int i = 0; i < itemsClicked.length();++i){
             try{
+                JSONObject clickedItem = (JSONObject) itemsClicked.get(i);
+                String itemId = (String) clickedItem.get("objectId");
+                queryViewedItem(itemId);
 
-                ClickedItem clickedItem = (ClickedItem) itemsClicked.get(i);
-                SuggestedItem suggestedItem = new SuggestedItem(clickedItem);
-                temp.add(suggestedItem);
             } catch (Exception e){
                 // TODO: Decide how to handle this exception later
             }
-            itemList.addAll(temp);
-            adapter.notifyDataSetChanged();
         }
+    }
+
+    private void queryViewedItem(String itemId) {
+        ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
+        query.getInBackground(itemId, new GetCallback<ClickedItem>() {
+            @Override
+            public void done(ClickedItem object, ParseException e) {
+                if (e == null){
+                    SuggestedItem suggestedItem = new SuggestedItem(object);
+                    itemList.add(suggestedItem);
+                    if (itemList.size() > 0){
+                        tvRecentlyViewed.setVisibility(View.VISIBLE);
+                    }
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG,"The length of my clicked items array is : " + itemList.size());
+                    Log.d(TAG,object + "has been added successfully");
+                } else{
+                    Log.d(TAG,"There was an error with fetching this data");
+                }
+            }
+        });
     }
 }

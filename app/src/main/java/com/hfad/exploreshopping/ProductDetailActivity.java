@@ -14,13 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -129,7 +136,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             Toast.makeText(ProductDetailActivity.this, "Adding to cart unsuccessful", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        currentUser.add("CartItems", cartItem);
+                        currentUser.addUnique("CartItems", cartItem);
                         currentUser.saveInBackground();
                         Toast.makeText(ProductDetailActivity.this, "Added to cart successfully", Toast.LENGTH_SHORT).show();
                         productInCartOrPurchased = true;
@@ -142,23 +149,61 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
         if (productInCartOrPurchased.equals(false)) {
-            ClickedItem clickedItem = new ClickedItem(suggestedItem);
-            clickedItem.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null){
-                        ParseUser currentUser = ParseUser.getCurrentUser();
-                        currentUser.add("clickedItems",clickedItem);
-                        currentUser.saveInBackground();
-                    } else{
-                        Log.d(TAG,"Unable to add item to Parse");
+           queryViewedItem();
+        }
+        super.onDestroy();
+    }
+
+    private void queryViewedItem() {
+        ClickedItem clickedItem = new ClickedItem(suggestedItem);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
+        HashSet<String> imageUrlSet = new HashSet<>();
+
+        for (int i = 0; i < itemsClicked.length();++i){
+            try{
+                JSONObject itemAlreadyClicked = (JSONObject) itemsClicked.get(i);
+                String itemId = (String) itemAlreadyClicked.get("objectId");
+
+                ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
+                query.getInBackground(itemId, new GetCallback<ClickedItem>() {
+                    @Override
+                    public void done(ClickedItem object, ParseException e) {
+                        if (e == null){
+                            String imageUrl = object.getProductImageUrl();
+                            imageUrlSet.add(imageUrl);
+                        } else{
+                            Log.d(TAG,"There was an error with fetching this data");
+                        }
                     }
+                });
+
+                if (i == itemsClicked.length() -1){
+                    if (!imageUrlSet.contains(clickedItem.getProductImageUrl())){
+                        clickedItem.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null){
+                                    ParseUser currentUser = ParseUser.getCurrentUser();
+                                    currentUser.addUnique("clickedItems",clickedItem);
+                                    currentUser.saveInBackground();
+                                    Log.d(TAG,clickedItem.getProductImageUrl() + "was added on Parse");
+                                } else{
+                                    Log.d(TAG,"Unable to add item to Parse");
+                                }
+                            }
+                        });
+                    }
+                } else{
+                    Log.d(TAG,"This is the case of an already viewed item from the user");
+
                 }
-            });
-        } else{
-            Log.d(TAG,"Unable to populate to Parse");
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
         }
-            super.onDestroy();
-        }
+
+    }
 }
