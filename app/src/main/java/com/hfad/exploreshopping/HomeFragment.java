@@ -265,7 +265,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void queryViewedItem(String itemId) {
+
         ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
+        query.setLimit(10);
+        query.addDescendingOrder("createdAt");
         query.getInBackground(itemId, new GetCallback<ClickedItem>() {
             @Override
             public void done(ClickedItem object, ParseException e) {

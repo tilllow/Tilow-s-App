@@ -80,6 +80,7 @@ public class CartItemsFragment extends Fragment {
 
     private void queryPurchaseItem(String itemId) {
         query = ParseQuery.getQuery(CartItem.class);
+        query.addDescendingOrder("createdAt");
         query.getInBackground(itemId, new GetCallback<CartItem>() {
             @Override
             public void done(CartItem object, ParseException e) {
