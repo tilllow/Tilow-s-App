@@ -1,5 +1,6 @@
 package com.hfad.exploreshopping;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -80,6 +81,14 @@ public class ProfileFragment extends Fragment {
             Log.d(TAG,"Is it not interesting how this piece of code manages to run all of the time");
         }
 
+        tvResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),ForgotPasswordActivity.class);
+                intent.putExtra("EXTRA_CODE",1);
+                startActivity(intent);
+            }
+        });
 
 
         tvEditProfile.setOnClickListener(new View.OnClickListener() {

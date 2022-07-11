@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -22,20 +21,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.hfad.exploreshopping.ItemsAdapter;
-import com.hfad.exploreshopping.R;
-import com.hfad.exploreshopping.Store;
-import com.hfad.exploreshopping.SuggestedItem;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -59,7 +51,7 @@ public class HomeFragment extends Fragment {
     private SearchView svSearchProduct;
     private ProgressBar progressBar;
     private GridView gvStores;
-    private int images[] = {R.drawable.nike_photo,R.drawable.asos_logo,R.drawable.amazon_simple_logo,R.drawable.img_1};
+    private int images[] = {R.drawable.nike_photo,R.drawable.asos_logo,R.drawable.amazon_simple_logo,R.drawable.new_background};
     private String names[] = {"Nike Store","Asos Store","Amazon Store","Shoes collection"};
     private String description[] = {"This is the Nike Store","This is the Asos Store","This is the Amazon Store","This is the Shoe Store"};
     private List<Store> storeList = new ArrayList<>();
@@ -279,8 +271,6 @@ public class HomeFragment extends Fragment {
                         tvRecentlyViewed.setVisibility(View.VISIBLE);
                     }
                     adapter.notifyDataSetChanged();
-                    Log.d(TAG,"The length of my clicked items array is : " + itemList.size());
-                    Log.d(TAG,object + "has been added successfully");
                 } else{
                     Log.d(TAG,"There was an error with fetching this data");
                 }

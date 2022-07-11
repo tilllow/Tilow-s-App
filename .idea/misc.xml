@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/drawable/progress_bar.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_cart_item.xml" value="0.9369791666666667" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.32916666666666666" />
         <entry key="app/src/main/res/layout/activity_individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.38958333333333334" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.5" />

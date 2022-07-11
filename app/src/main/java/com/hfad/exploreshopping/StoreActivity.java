@@ -129,19 +129,6 @@ public class StoreActivity extends AppCompatActivity {
                 });
                 break;
         }
-
-//        svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filterList(newText);
-//                return true;
-//            }
-//        });
     }
 
     private void filterList(String text) {

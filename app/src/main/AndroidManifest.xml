@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".StoreActivity"
             android:exported="false" />
         <activity
@@ -63,21 +66,23 @@
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="@string/facebook_app_id"
-            android:exported="true"/>
+            android:exported="true" />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
-            android:value="@string/back4app_server_url"/>
-
+            android:value="@string/back4app_server_url" />
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value= "@string/back4app_app_id"/>
+            android:value="@string/back4app_app_id" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="@string/back4app_client_key"/>
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+            android:value="@string/back4app_client_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
     </application>
 
 </manifest>

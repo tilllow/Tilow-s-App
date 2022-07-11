@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sign_up_page_background"
+    android:background="@drawable/sea_blue_background"
     tools:context=".SignInActivity">
 
     <TextView
         android:id="@+id/tvLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Explore Shopping"
         android:textColor="@color/background_color_light"
         android:textSize="36sp"
@@ -47,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLogo" />
 
     <EditText
-        android:id="@+id/etUserPassword"
+        android:id="@+id/etUserEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -76,8 +77,8 @@
         android:textColor="@color/background_color_light"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/etUserPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etUserPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/etUserEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etUserEmail" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLoginToShop"
@@ -87,8 +88,8 @@
         android:background="@drawable/btn_bg"
         android:elevation="5dp"
         android:text="Login"
-        app:layout_constraintEnd_toEndOf="@+id/etUserPassword"
-        app:layout_constraintStart_toStartOf="@+id/etUserPassword"
+        app:layout_constraintEnd_toEndOf="@+id/etUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/etUserEmail"
         app:layout_constraintTop_toBottomOf="@+id/tvForgotPassword" />
 
     <LinearLayout

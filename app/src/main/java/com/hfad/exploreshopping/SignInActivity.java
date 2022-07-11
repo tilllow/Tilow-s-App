@@ -1,7 +1,5 @@
 package com.hfad.exploreshopping;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +17,8 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.internal.CollectionMapper;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
@@ -40,12 +38,14 @@ public class SignInActivity extends AppCompatActivity {
     AppCompatButton btnLogin;
     TextView tvSignUp;
     AppCompatButton btnFacebook;
+    TextView tvForgotPassword;
     public static final String TAG = "SignInActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
 //        if(ParseUser.getCurrentUser() != null){
 //            launchMainActivity();
@@ -54,10 +54,19 @@ public class SignInActivity extends AppCompatActivity {
 
 
         etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etUserPassword);
+        etPassword = findViewById(R.id.etUserEmail);
         btnLogin = findViewById(R.id.btnLoginToShop);
         tvSignUp = findViewById(R.id.tvSignUp);
         btnFacebook = findViewById(R.id.btnFacebook);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignInActivity.this,ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,12 +85,10 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(SignInActivity.this,"The user cancelled the Facebook Login",Toast.LENGTH_SHORT).show();
                         } else if (user.isNew()){
                             Toast.makeText(SignInActivity.this,"User signed up and logged in through Facebook",Toast.LENGTH_SHORT).show();
-//                            launchMainActivity();
                             getUserDetailFromFB();
 
                         } else{
                             Toast.makeText(SignInActivity.this,"User logged in through Facebook",Toast.LENGTH_SHORT).show();
-//                            launchMainActivity();
                             getUserDetailFromParse();
                         }
                     }
@@ -105,14 +112,6 @@ public class SignInActivity extends AppCompatActivity {
                 loginUser(username,password);
             }
         });
-        
-//        btnSignUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                launchSignUpPage();
-//            }
-//        });
-
     }
 
     private void getUserDetailFromParse() {
@@ -175,22 +174,41 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void loginUser(String username, String password){
-        Log.i(TAG,"Attempting to login user " + username);
-        //Toast.makeText(SignInActivity.this,"Hi, I am a toast",Toast.LENGTH_SHORT).show();
+
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e != null){
-                    Log.i(TAG,"Issue with login",e);
+                    displayAlertMessage("Login","Unable to login");
                     return;
                 }
-                // TODO: navigate to the main activity if the user has signed in properly
-                Log.i(TAG,"Login was successful");
-                Toast.makeText(SignInActivity.this,"Success!",Toast.LENGTH_SHORT).show();
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                boolean emailVerified = currentUser.getBoolean("emailVerified");
+                if (Boolean.compare(emailVerified,true) == 0){
+                    displayAlertMessage("Login","Verify your email address before you proceed");
+                    Toast.makeText(SignInActivity.this,"Please verify your email address before proceeding.",Toast.LENGTH_SHORT);
+                    return;
+                }
+
                 launchMainActivity();
             }
         });
 
+    }
+
+    private void displayAlertMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog ok = builder.create();
+        ok.show();
     }
 
     @Override
@@ -200,7 +218,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void launchMainActivity() {
-        Log.d(TAG,"I am in the launch MainActivity section");
         Intent i = new Intent(SignInActivity.this,MainActivity.class);
         startActivity(i);
     }

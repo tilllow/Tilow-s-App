@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sign_up_page_background"
+    android:background="@drawable/sea_blue_background"
     tools:context=".SignUpActivity">
 
     <TextView
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLogo" />
 
     <EditText
-        android:id="@+id/etUserPassword"
+        android:id="@+id/etUserEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -84,9 +84,9 @@
         android:paddingBottom="10dp"
         android:textColor="@color/background_color_light"
         android:textColorHint="@color/background_color_light"
-        app:layout_constraintEnd_toEndOf="@+id/etUserPassword"
-        app:layout_constraintStart_toStartOf="@+id/etUserPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etUserPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/etUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/etUserEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etUserEmail" />
 
     <EditText
         android:id="@+id/etInputConfirmPassword"
