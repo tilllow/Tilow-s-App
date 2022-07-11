@@ -53,7 +53,7 @@ public class CartItemsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvCartItems = view.findViewById(R.id.rvCartItems);
         cartItemsList = new ArrayList<>();
-        cartItemsAdapter = new CartItemsAdapter(getContext(),cartItemsList);
+        cartItemsAdapter = new CartItemsAdapter(getContext(), cartItemsList);
         rvCartItems.setAdapter(cartItemsAdapter);
         rvCartItems.setLayoutManager(new LinearLayoutManager(getContext()));
         rvCartItems.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -64,15 +64,15 @@ public class CartItemsFragment extends Fragment {
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray itemsInCart = currentUser.getJSONArray("CartItems");
-        if (itemsInCart == null){
+        if (itemsInCart == null) {
             return;
         }
-        for (int i = 0; i < itemsInCart.length();++i){
-            try{
+        for (int i = 0; i < itemsInCart.length(); ++i) {
+            try {
                 JSONObject cartItem = (JSONObject) itemsInCart.get(i);
                 String itemId = (String) cartItem.get("objectId");
                 queryPurchaseItem(itemId);
-            } catch (Exception e){
+            } catch (Exception e) {
                 // TODO: Decide how to handle this exception later
             }
         }
@@ -84,10 +84,10 @@ public class CartItemsFragment extends Fragment {
         query.getInBackground(itemId, new GetCallback<CartItem>() {
             @Override
             public void done(CartItem object, ParseException e) {
-                if (e == null){
+                if (e == null) {
                     cartItemsList.add(object);
                     cartItemsAdapter.notifyDataSetChanged();
-                } else{
+                } else {
                     // TODO: Decide how to handle any error that may result later
                 }
             }

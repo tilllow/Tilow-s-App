@@ -59,7 +59,7 @@ public class PurchasedItemsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvPurchasedItems = view.findViewById(R.id.rvPurchasedItems);
         purchasedItemsList = new ArrayList<>();
-        purchasedItemsAdapter = new PurchasedItemsAdapter(getContext(),purchasedItemsList);
+        purchasedItemsAdapter = new PurchasedItemsAdapter(getContext(), purchasedItemsList);
         rvPurchasedItems.setAdapter(purchasedItemsAdapter);
         rvPurchasedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         //rvPurchasedItems.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -71,7 +71,7 @@ public class PurchasedItemsFragment extends Fragment {
 
     PurchaseItem deletedPurchaseItem = null;
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -82,18 +82,18 @@ public class PurchasedItemsFragment extends Fragment {
 
             int position = viewHolder.getAdapterPosition();
 
-            switch (direction){
+            switch (direction) {
                 case ItemTouchHelper.LEFT:
                     deletedPurchaseItem = purchasedItemsList.get(position);
                     String itemId = deletedPurchaseItem.getObjectId();
                     purchasedItemsList.remove(position);
                     purchasedItemsAdapter.notifyItemRemoved(position);
                     final boolean[] isUndone = {false};
-                    Snackbar.make(rvPurchasedItems,deletedPurchaseItem.getProductName() + " removed",Snackbar.LENGTH_LONG)
+                    Snackbar.make(rvPurchasedItems, deletedPurchaseItem.getProductName() + " removed", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    purchasedItemsList.add(position,deletedPurchaseItem);
+                                    purchasedItemsList.add(position, deletedPurchaseItem);
                                     purchasedItemsAdapter.notifyItemInserted(position);
                                     isUndone[0] = true;
                                 }
@@ -101,7 +101,7 @@ public class PurchasedItemsFragment extends Fragment {
                             .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
                                 @Override
                                 public void onDismissed(Snackbar transientBottomBar, int event) {
-                                    if (isUndone[0] == false){
+                                    if (isUndone[0] == false) {
                                         deletedPurchaseItem.deleteInBackground();
                                     }
                                     super.onDismissed(transientBottomBar, event);
@@ -123,30 +123,30 @@ public class PurchasedItemsFragment extends Fragment {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_color_light))
                     .addSwipeLeftActionIcon(R.drawable.ic_delete)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.red))
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 
-    private void populatePurchasedItemsList(){
+    private void populatePurchasedItemsList() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        List<PurchaseItem> temp ;
+        List<PurchaseItem> temp;
         JSONArray itemsPurchased = currentUser.getJSONArray("ItemsPurchased");
         temp = new ArrayList<>();
 
-        if (itemsPurchased == null){
+        if (itemsPurchased == null) {
             return;
         }
-        for (int i = 0; i < itemsPurchased.length();++i){
-            try{
+        for (int i = 0; i < itemsPurchased.length(); ++i) {
+            try {
 
                 JSONObject purchaseItem = (JSONObject) itemsPurchased.get(i);
                 String itemId = (String) purchaseItem.get("objectId");
                 queryPurchaseItem(itemId);
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 // TODO: Decide how to handle this exception later
             }
         }
@@ -160,13 +160,13 @@ public class PurchasedItemsFragment extends Fragment {
         query.getInBackground(itemId, new GetCallback<PurchaseItem>() {
             @Override
             public void done(PurchaseItem object, ParseException e) {
-                if (e == null){
+                if (e == null) {
                     purchasedItemsList.add(object);
                     purchasedItemsAdapter.notifyDataSetChanged();
-                    Log.d(TAG,"The length of my Purchased items array is : " + purchasedItemsList.size());
-                    Log.d(TAG,object + "has been added successfully");
-                } else{
-                    Log.d(TAG,"There was an error with fetching this data");
+                    Log.d(TAG, "The length of my Purchased items array is : " + purchasedItemsList.size());
+                    Log.d(TAG, object + "has been added successfully");
+                } else {
+                    Log.d(TAG, "There was an error with fetching this data");
                 }
             }
         });

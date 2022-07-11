@@ -26,25 +26,25 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        Integer code = getIntent().getIntExtra("EXTRA_CODE",0);
+        Integer code = getIntent().getIntExtra("EXTRA_CODE", 0);
 
         btnResetPassword = findViewById(R.id.btnResetPassword);
         etResetEmailAddress = findViewById(R.id.etResetEmailAddress);
         tvSignInPageNavigator = findViewById(R.id.tvSignInPageNavigator);
 
-        if (code == 1){
+        if (code == 1) {
             tvSignInPageNavigator.setText("Finish");
         }
 
         tvSignInPageNavigator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (code == 1){
+                if (code == 1) {
                     finish();
                     return;
                 }
 
-                Intent intent = new Intent(ForgotPasswordActivity.this,SignInActivity.class);
+                Intent intent = new Intent(ForgotPasswordActivity.this, SignInActivity.class);
                 startActivity(intent);
             }
         });
@@ -57,15 +57,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 ParseUser.requestPasswordResetInBackground(emailAddress, new RequestPasswordResetCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e == null){
-                            if (code == 1){
-                                alertDisplayer("Password reset","Verification email sent + \nFollow instructions to reset the account password");
+                        if (e == null) {
+                            if (code == 1) {
+                                alertDisplayer("Password reset", "Verification email sent + \nFollow instructions to reset the account password");
                                 return;
                             }
-                            alertDisplayer("Password reset","Verification email sent" +
+                            alertDisplayer("Password reset", "Verification email sent" +
                                     "\nNavigate back to the sign in page to log into your account");
-                        } else{
-                            alertDisplayer("Password reset",e.getMessage());
+                        } else {
+                            alertDisplayer("Password reset", e.getMessage());
                         }
                     }
                 });
@@ -74,8 +74,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
 
-
-    private void alertDisplayer(String title,String message){
+    private void alertDisplayer(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this)
                 .setTitle(title)
                 .setMessage(message)

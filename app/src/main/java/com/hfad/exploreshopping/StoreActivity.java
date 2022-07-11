@@ -43,7 +43,7 @@ public class StoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-        int position = getIntent().getIntExtra("EXTRA_POSITION",0);
+        int position = getIntent().getIntExtra("EXTRA_POSITION", 0);
 
         itemList = new ArrayList<>();
         tvStoreWelcomeMessage = findViewById(R.id.tvStoreWelcomeMessage);
@@ -52,15 +52,16 @@ public class StoreActivity extends AppCompatActivity {
         rvNikeShoes = findViewById(R.id.rvNikeShoes);
         pbStoreItemLoading = findViewById(R.id.pbStoreItemLoading);
 
-        adapter = new ItemsAdapter(this,itemList);
+        adapter = new ItemsAdapter(this, itemList);
         rvNikeShoes.setAdapter(adapter);
-        rvNikeShoes.setLayoutManager(new GridLayoutManager(this,2));
+        rvNikeShoes.setLayoutManager(new GridLayoutManager(this, 2));
 
 
-        switch (position){
-            case 0: tvStoreWelcomeMessage.setText("Welcome to the Nike Store");
-                    svSearchStore.setQueryHint("Search Nike Shoes here...");
-                    requestNikeProducts();
+        switch (position) {
+            case 0:
+                tvStoreWelcomeMessage.setText("Welcome to the Nike Store");
+                svSearchStore.setQueryHint("Search Nike Shoes here...");
+                requestNikeProducts();
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
@@ -73,7 +74,7 @@ public class StoreActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-                    break;
+                break;
             case 1:
                 requestAsosProducts();
                 tvStoreWelcomeMessage.setText("Welcome to the Asos Store");
@@ -134,23 +135,23 @@ public class StoreActivity extends AppCompatActivity {
     private void filterList(String text) {
         List<SuggestedItem> filteredList = new ArrayList<>();
 
-        for (SuggestedItem item : itemList){
-            if (item.getProductName().toLowerCase().contains(text.toLowerCase())){
+        for (SuggestedItem item : itemList) {
+            if (item.getProductName().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
-            if (!filteredList.isEmpty()){
+            if (!filteredList.isEmpty()) {
                 adapter.setFilteredList(filteredList);
             }
         }
     }
 
-    private void requestNikeProducts(){
+    private void requestNikeProducts() {
         String nikeApiEndpoint = "https://nike-products.p.rapidapi.com/shoes";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        headers.put("X-RapidAPI-Host","nike-products.p.rapidapi.com");
+        headers.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        headers.put("X-RapidAPI-Host", "nike-products.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
 
@@ -163,20 +164,20 @@ public class StoreActivity extends AppCompatActivity {
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     List<SuggestedItem> items = new ArrayList<>();
-                     for (int i = 0; i < jsonArray.length(); ++i){
-                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                         String shoeImageUrl = jsonObject.getString("img");
-                         String productDetailUrl = jsonObject.getString("url");
-                         String shoeName = jsonObject.getString("title");
-                         String shoePrice = jsonObject.getString("price");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        String shoeImageUrl = jsonObject.getString("img");
+                        String productDetailUrl = jsonObject.getString("url");
+                        String shoeName = jsonObject.getString("title");
+                        String shoePrice = jsonObject.getString("price");
 
-                         SuggestedItem shoeItem = new SuggestedItem(shoeName,shoeImageUrl,shoePrice,productDetailUrl,null,null);
-                         items.add(shoeItem);
-                     }
+                        SuggestedItem shoeItem = new SuggestedItem(shoeName, shoeImageUrl, shoePrice, productDetailUrl, null, null);
+                        items.add(shoeItem);
+                    }
 
-                     itemList.addAll(items);
-                     adapter.notifyDataSetChanged();
-                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
+                    itemList.addAll(items);
+                    adapter.notifyDataSetChanged();
+                    pbStoreItemLoading.setVisibility(View.INVISIBLE);
                 } catch (JSONException e) {
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
@@ -187,20 +188,20 @@ public class StoreActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
 //                Toast.makeText(getContext(),"Your request could not be completed. Please try again",Toast.LENGTH_SHORT);
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                Log.e(TAG, "OnFailure",throwable);
+                Log.e(TAG, "OnFailure", throwable);
 //                progressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    private void requestAsosProducts(){
+    private void requestAsosProducts() {
 
         String asosApiEndpoint = "https://asos2.p.rapidapi.com/products/v2/list?store=US&offset=0&categoryId=4209&limit=48&country=US&sort=freshness&currency=USD&sizeSchema=US&lang=en-US";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        headers.put("X-RapidAPI-Host","asos2.p.rapidapi.com");
+        headers.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        headers.put("X-RapidAPI-Host", "asos2.p.rapidapi.com");
         itemList.clear();
 
         pbStoreItemLoading.setVisibility(View.VISIBLE);
@@ -215,7 +216,7 @@ public class StoreActivity extends AppCompatActivity {
                     List<SuggestedItem> items = new ArrayList<>();
                     JSONArray jsonArray = jsonObject.getJSONArray("products");
 
-                    for (int i = 0; i < jsonArray.length();++i){
+                    for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject product = (JSONObject) jsonArray.get(i);
                         String name = product.getString("name");
                         String productImageUrl = product.getString("imageUrl");
@@ -226,15 +227,14 @@ public class StoreActivity extends AppCompatActivity {
                         String currentPrice = currentPriceObject.getString("text");
                         String originalPrice = oldPriceObject.getString("text");
 
-                        SuggestedItem productItem = new SuggestedItem(name,productImageUrl,currentPrice,productDetailUrl,originalPrice,null);
+                        SuggestedItem productItem = new SuggestedItem(name, productImageUrl, currentPrice, productDetailUrl, originalPrice, null);
                         items.add(productItem);
                     }
 
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
                 }
@@ -242,20 +242,20 @@ public class StoreActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Toast.makeText(StoreActivity.this,"Your request could not be completed. Please try again",Toast.LENGTH_SHORT);
-                Log.e(TAG, "OnFailure",throwable);
+                Toast.makeText(StoreActivity.this, "Your request could not be completed. Please try again", Toast.LENGTH_SHORT);
+                Log.e(TAG, "OnFailure", throwable);
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
             }
         });
     }
 
-    private void requestAmazonTodayDeals(){
+    private void requestAmazonTodayDeals() {
         String apiEndpoint = "https://amazon24.p.rapidapi.com/api/todaydeals";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        headers.put("X-RapidAPI-Host","amazon24.p.rapidapi.com");
+        headers.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        headers.put("X-RapidAPI-Host", "amazon24.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
 
@@ -270,7 +270,7 @@ public class StoreActivity extends AppCompatActivity {
                     //itemList.clear();
                     List<SuggestedItem> items = new ArrayList<>();
 
-                    for (int i = 0; i < docs.length();++i){
+                    for (int i = 0; i < docs.length(); ++i) {
 
                         JSONObject productInfo = docs.getJSONObject(i);
                         String productName = productInfo.getString("deal_title");
@@ -285,16 +285,16 @@ public class StoreActivity extends AppCompatActivity {
                         String productDetailUrl = productInfo.getString("deal_details_url");
                         //String productOriginalPrice = productInfo.getString("original_price");
                         //String productRatings = productInfo.getString("evaluate_rate");
-                        SuggestedItem suggestedItem = new SuggestedItem(productName,productImageUrl,productPrice,productDetailUrl,null,null);
+                        SuggestedItem suggestedItem = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, null);
                         items.add(suggestedItem);
                     }
                     itemList.addAll(items);
-                    Log.d(TAG,"This is the size of the array returned from the API" + items.size());
+                    Log.d(TAG, "This is the size of the array returned from the API" + items.size());
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                 } catch (JSONException e) {
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                    Log.d(TAG,"Something went wrong with this request");
+                    Log.d(TAG, "Something went wrong with this request");
                     e.printStackTrace();
                 }
             }
@@ -302,21 +302,21 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                Toast.makeText(StoreActivity.this,"Your request could not be completed. Please try again",Toast.LENGTH_SHORT);
-                Log.e(TAG, "OnFailure",throwable);
+                Toast.makeText(StoreActivity.this, "Your request could not be completed. Please try again", Toast.LENGTH_SHORT);
+                Log.e(TAG, "OnFailure", throwable);
                 //progressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    private void requestShoesCollections(){
+    private void requestShoesCollections() {
 
         String apiEndpoint = "https://shoes-collections.p.rapidapi.com/shoes";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        headers.put("X-RapidAPI-Host","shoes-collections.p.rapidapi.com");
+        headers.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        headers.put("X-RapidAPI-Host", "shoes-collections.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
 
@@ -326,23 +326,23 @@ public class StoreActivity extends AppCompatActivity {
 
                 JSONArray jsonArray = json.jsonArray;
 
-                try{
+                try {
                     List<SuggestedItem> items = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length();++i){
+                    for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject productObject = (JSONObject) jsonArray.getJSONObject(i);
                         String productName = productObject.getString("name");
                         String productPrice = "$" + productObject.getString("price");
                         String productImageUrl = productObject.getString("image");
                         String productDescription = productObject.getString("description");
 
-                        SuggestedItem item = new SuggestedItem(productName,productImageUrl,productPrice,productDescription,null,null);
+                        SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDescription, null, null);
                         items.add(item);
                     }
 
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                }catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                 }
@@ -351,21 +351,21 @@ public class StoreActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG,"OnFailure",throwable);
+                Log.e(TAG, "OnFailure", throwable);
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
             }
         });
 
     }
 
-    private void requestAmazonProducts(String searchWord){
+    private void requestAmazonProducts(String searchWord) {
 
         String amazonApiEndpoint = "https://amazon60.p.rapidapi.com/search/" + searchWord + "?api_key=e4037415b3d58b93e689d4ed83405ffb";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams requestParams = new RequestParams();
         RequestHeaders requestHeaders = new RequestHeaders();
-        requestHeaders.put("X-RapidAPI-Key","11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        requestHeaders.put("X-RapidAPI-Host","amazon60.p.rapidapi.com");
+        requestHeaders.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        requestHeaders.put("X-RapidAPI-Host", "amazon60.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
         // new changes
@@ -376,19 +376,19 @@ public class StoreActivity extends AppCompatActivity {
                 JSONObject jsonObject = json.jsonObject;
 
 
-                try{
+                try {
                     List<SuggestedItem> items = new ArrayList<>();
                     JSONArray products = jsonObject.getJSONArray("results");
-                    for (int i = 0; i < products.length();++i){
+                    for (int i = 0; i < products.length(); ++i) {
                         JSONObject product = (JSONObject) products.get(i);
 
                         String productName = product.getString("name");
                         String productImageUrl = product.getString("image");
                         String productDetailUrl = product.getString("url");
                         String productPrice = product.getString("price_string");
-                        String productRatings = String.valueOf(product.getInt("stars")) ;
+                        String productRatings = String.valueOf(product.getInt("stars"));
 
-                        SuggestedItem item = new SuggestedItem(productName,productImageUrl,productPrice,productDetailUrl,null,productRatings);
+                        SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, productRatings);
                         items.add(item);
                         // Made some new changes to the app
                     }
@@ -397,20 +397,20 @@ public class StoreActivity extends AppCompatActivity {
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                     tvAmazonTodayDeals.setText("Showing results for " + searchWord);
 
-                } catch(JSONException e){
+                } catch (JSONException e) {
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
                     e.printStackTrace();
                 }
 
 
-                Log.d(TAG,"This response passed successfully");
+                Log.d(TAG, "This response passed successfully");
                 // Random comment
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                Log.i(TAG,"The request has failed",throwable);
+                Log.i(TAG, "The request has failed", throwable);
             }
         });
     }

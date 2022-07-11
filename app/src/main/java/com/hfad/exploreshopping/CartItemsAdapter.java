@@ -21,12 +21,12 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.ViewHolder>{
+public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.ViewHolder> {
     public static final String TAG = "CartItemsAdapter";
     private Context context;
     private List<CartItem> cartItemList;
 
-    public CartItemsAdapter(Context context, List<CartItem> cartItemList){
+    public CartItemsAdapter(Context context, List<CartItem> cartItemList) {
         this.context = context;
         this.cartItemList = cartItemList;
     }
@@ -34,13 +34,13 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_cart_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_cart_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        Toast.makeText(context,"The item count is : " + cartItemList.size(),Toast.LENGTH_SHORT);
+        Toast.makeText(context, "The item count is : " + cartItemList.size(), Toast.LENGTH_SHORT);
         return cartItemList.size();
     }
 
@@ -74,7 +74,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         public void bind(CartItem item) {
             tvPurchasedProductName.setText(item.getProductName());
             tvPurchasedItemPrice.setText("Purchase Price : " + item.getProductPrice());
-            if (item.getProductRatings() != null){
+            if (item.getProductRatings() != null) {
                 tvCartProductRatings.setText("Product Ratings : " + item.getProductRatings());
             }
             Glide.with(context).load(item.getProductImageUrl()).into(ivItemPurchasedPicture);
@@ -87,18 +87,18 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                     newPurchaseItem.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e != null){
-                                Toast.makeText(context,"Purchase unsuccessful",Toast.LENGTH_SHORT).show();
+                            if (e != null) {
+                                Toast.makeText(context, "Purchase unsuccessful", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            currentUser.add("ItemsPurchased",newPurchaseItem);
+                            currentUser.add("ItemsPurchased", newPurchaseItem);
                             currentUser.saveInBackground();
-                            Toast.makeText(context, "Purchase successful",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Purchase successful", Toast.LENGTH_SHORT).show();
 
                             item.deleteInBackground(new DeleteCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    if (e == null){
+                                    if (e == null) {
                                         int pos = getAdapterPosition();
                                         cartItemList.remove(pos);
                                         notifyDataSetChanged();
@@ -118,18 +118,18 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                     newPurchaseItem.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e != null){
-                                Toast.makeText(context,"Unable to remove item from cart",Toast.LENGTH_SHORT).show();
+                            if (e != null) {
+                                Toast.makeText(context, "Unable to remove item from cart", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             item.deleteInBackground(new DeleteCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    if (e == null){
+                                    if (e == null) {
                                         int pos = getAdapterPosition();
                                         cartItemList.remove(pos);
                                         notifyDataSetChanged();
-                                        Toast.makeText(context,"Item Removed Successfully",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Item Removed Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -140,11 +140,11 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         }
     }
 
-    public void clear(){
+    public void clear() {
         cartItemList.clear();
     }
 
-    public void AddAll(ArrayList<CartItem> cartItems){
+    public void AddAll(ArrayList<CartItem> cartItems) {
         cartItemList.addAll(cartItems);
     }
 }

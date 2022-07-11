@@ -22,11 +22,11 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
     private Context context;
     private List<SuggestedItem> itemsList;
 
-    public ItemsAdapter(Context context, List<SuggestedItem> itemsList){
+    public ItemsAdapter(Context context, List<SuggestedItem> itemsList) {
         this.context = context;
         this.itemsList = itemsList;
     }
@@ -34,13 +34,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_individual_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_individual_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        Toast.makeText(context,"The item count is : " + itemsList.size(),Toast.LENGTH_SHORT);
+        Toast.makeText(context, "The item count is : " + itemsList.size(), Toast.LENGTH_SHORT);
         return itemsList.size();
     }
 
@@ -82,17 +82,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         }
     }
 
-    public void clear(){
+    public void clear() {
         itemsList.clear();
     }
 
-    public void AddAll(ArrayList<SuggestedItem> suggestedItems){
+    public void AddAll(ArrayList<SuggestedItem> suggestedItems) {
         itemsList.addAll(suggestedItems);
         notifyDataSetChanged();
         //Toast.makeText(context, "Adapter has been notified successfully", Toast.LENGTH_SHORT).show();
     }
 
-    public void setFilteredList(List<SuggestedItem> filteredList){
+    public void setFilteredList(List<SuggestedItem> filteredList) {
         this.itemsList = filteredList;
         notifyDataSetChanged();
     }

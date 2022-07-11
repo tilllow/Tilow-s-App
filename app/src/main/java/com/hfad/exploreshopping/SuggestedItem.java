@@ -9,7 +9,6 @@ import com.parse.ParseObject;
 import org.parceler.Parcel;
 
 
-
 @Parcel
 public class SuggestedItem {
 
@@ -20,10 +19,10 @@ public class SuggestedItem {
     private String productOriginalPrice = "null";
     private String productRatings = "No ratings available";
 
-    public SuggestedItem(){
+    public SuggestedItem() {
     }
 
-    public SuggestedItem(ClickedItem clickedItem){
+    public SuggestedItem(ClickedItem clickedItem) {
         this.productName = clickedItem.getProductName();
         this.productDetailUrl = clickedItem.getProductDetailUrl();
         this.productImageUrl = clickedItem.getProductImageUrl();
@@ -33,9 +32,10 @@ public class SuggestedItem {
     }
 
     public SuggestedItem(String productName, String productImageUrl, String productPrice, String productDetailUrl, String productOriginalPrice, String productRatings) {
-        if (productOriginalPrice != null){
+        if (productOriginalPrice != null) {
             this.productOriginalPrice = productOriginalPrice;
-        } if (productRatings != null){
+        }
+        if (productRatings != null) {
             this.productRatings = productRatings;
         }
         this.productName = productName;
@@ -70,7 +70,7 @@ public class SuggestedItem {
         return productRatings;
     }
 
-    String processRatings(String ratings){
+    String processRatings(String ratings) {
         return null;
     }
 }

@@ -17,12 +17,12 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchasedItemsAdapter extends RecyclerView.Adapter<PurchasedItemsAdapter.ViewHolder>{
+public class PurchasedItemsAdapter extends RecyclerView.Adapter<PurchasedItemsAdapter.ViewHolder> {
 
     private Context context;
     private List<PurchaseItem> purchaseItemList;
 
-    public PurchasedItemsAdapter(Context context, List<PurchaseItem> purchaseItemList){
+    public PurchasedItemsAdapter(Context context, List<PurchaseItem> purchaseItemList) {
         this.context = context;
         this.purchaseItemList = purchaseItemList;
     }
@@ -30,13 +30,13 @@ public class PurchasedItemsAdapter extends RecyclerView.Adapter<PurchasedItemsAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_purchased_items,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_purchased_items, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        Toast.makeText(context,"The item count is : " + purchaseItemList.size(),Toast.LENGTH_SHORT);
+        Toast.makeText(context, "The item count is : " + purchaseItemList.size(), Toast.LENGTH_SHORT);
         return purchaseItemList.size();
     }
 
@@ -74,18 +74,18 @@ public class PurchasedItemsAdapter extends RecyclerView.Adapter<PurchasedItemsAd
         public void bind(PurchaseItem item) {
             tvPurchasedProductName.setText(item.getProductName());
             tvPurchasedItemPrice.setText("Purchase Price : " + item.getProductPrice());
-            if (item.getPurchaseDate() != null){
+            if (item.getPurchaseDate() != null) {
                 tvCartProductRatings.setText("Purchase Date : " + item.getPurchaseDate());
             }
             Glide.with(context).load(item.getProductImageUrl()).into(ivItemPurchasedPicture);
         }
     }
 
-    public void clear(){
+    public void clear() {
         purchaseItemList.clear();
     }
 
-    public void AddAll(ArrayList<PurchaseItem> purchaseItems){
+    public void AddAll(ArrayList<PurchaseItem> purchaseItems) {
         purchaseItemList.addAll(purchaseItems);
     }
 

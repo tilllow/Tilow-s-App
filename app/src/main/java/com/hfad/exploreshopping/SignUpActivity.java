@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         tvHasAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SignUpActivity.this,SignInActivity.class);
+                Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(i);
             }
         });
@@ -57,12 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
                 String initialPassword = etPassword.getText().toString();
                 String finalPassword = etConfirmPassword.getText().toString();
 
-                if (!initialPassword.equals(finalPassword)){
+                if (!initialPassword.equals(finalPassword)) {
                     // TODO : Display something to the uer when the two passwords do not match.
                     return;
                 }
 
-                try{
+                try {
 
                     ParseUser user = new ParseUser();
                     user.setUsername(etUsername.getText().toString());
@@ -72,20 +72,20 @@ public class SignUpActivity extends AppCompatActivity {
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e == null){
-                                Log.d(TAG,"The account has been successfully created");
+                            if (e == null) {
+                                Log.d(TAG, "The account has been successfully created");
                                 ParseUser.logOut();
-                                alertDisplayer("Account Created Successfully!","Please verify your email before login",false);
-                            } else{
+                                alertDisplayer("Account Created Successfully!", "Please verify your email before login", false);
+                            } else {
                                 ParseUser.logOut();
-                                alertDisplayer("Error Account Creation failed","Account could not be created" + " :" + e.getMessage(),true);
-                                Log.d(TAG,"Unable to create account");
+                                alertDisplayer("Error Account Creation failed", "Account could not be created" + " :" + e.getMessage(), true);
+                                Log.d(TAG, "Unable to create account");
                                 // TODO : Display something to the user so that he or she can create a brand new account.
                             }
                         }
                     });
 
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -93,7 +93,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    private void alertDisplayer(String title,String message, final boolean error){
+    private void alertDisplayer(String title, String message, final boolean error) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this)
                 .setTitle(title)
                 .setMessage(message)
@@ -101,8 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        if (!error){
-                            Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
+                        if (!error) {
+                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             launchSignInPage();
                         }
@@ -112,8 +112,8 @@ public class SignUpActivity extends AppCompatActivity {
         ok.show();
     }
 
-    private void launchSignInPage(){
-        Intent i = new Intent(this,SignInActivity.class);
+    private void launchSignInPage() {
+        Intent i = new Intent(this, SignInActivity.class);
         startActivity(i);
         //finish();
     }

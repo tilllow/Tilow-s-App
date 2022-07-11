@@ -71,9 +71,9 @@ public class FragmentEditProfile extends Fragment {
         etPhoneNumberField.setText(currentUser.getString("userPhoneNumber"));
         ParseFile parseFile = currentUser.getParseFile("ProfileImage");
 
-        if (parseFile != null){
+        if (parseFile != null) {
             Glide.with(getContext()).load(parseFile.getUrl()).into(ivAccountPicture);
-        } else{
+        } else {
             ivAccountPicture.setImageResource(R.drawable.ic_baseline_person_24);
         }
 
@@ -84,16 +84,15 @@ public class FragmentEditProfile extends Fragment {
                 String updatedPhoneNumberField = etPhoneNumberField.getText().toString();
                 String updatedEmailAddress = etEmailAddressField.getText().toString();
 
-                currentUser.put("userPersonalName",updatedUsername);
-                currentUser.put("userPhoneNumber",updatedPhoneNumberField);
-                currentUser.put("userEmailAddress",updatedEmailAddress);
+                currentUser.put("userPersonalName", updatedUsername);
+                currentUser.put("userPhoneNumber", updatedPhoneNumberField);
+                currentUser.put("userEmailAddress", updatedEmailAddress);
 
-                if (photoFile != null){
-                    Toast.makeText(getContext(),"No image taken",Toast.LENGTH_SHORT);
+                if (photoFile != null) {
+                    Toast.makeText(getContext(), "No image taken", Toast.LENGTH_SHORT);
                     currentUser.put("ProfileImage", new ParseFile(photoFile));
                     currentUser.saveInBackground();
                 }
-
 
 
                 ProfileFragment fragment = new ProfileFragment();
@@ -127,13 +126,13 @@ public class FragmentEditProfile extends Fragment {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(getContext(),"com.codepath.fileprovider",photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,fileProvider);
+        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent
-        if (intent.resolveActivity(getContext().getPackageManager()) != null){
-            startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
@@ -155,10 +154,10 @@ public class FragmentEditProfile extends Fragment {
     }
 
     private File getPhotoFileUri(String fileName) {
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),TAG);
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG,"failed to create directory");
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(TAG, "failed to create directory");
         }
         return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }

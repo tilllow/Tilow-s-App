@@ -152,7 +152,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
 
         if (productInCartOrPurchased.equals(false)) {
-           queryViewedItem();
+            queryViewedItem();
         }
         super.onDestroy();
     }
@@ -163,25 +163,25 @@ public class ProductDetailActivity extends AppCompatActivity {
         JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
         HashSet<String> imageUrlSet = new HashSet<>();
 
-        if (itemsClicked == null){
+        if (itemsClicked == null) {
             clickedItem.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    if (e == null){
-                        Log.d(TAG,"Item has been successfully saved");
+                    if (e == null) {
+                        Log.d(TAG, "Item has been successfully saved");
                         ParseUser currentUser = ParseUser.getCurrentUser();
-                        currentUser.addUnique("clickedItems",clickedItem);
+                        currentUser.addUnique("clickedItems", clickedItem);
                         currentUser.saveInBackground();
-                    } else{
-                        Log.d(TAG,"An error occurred when saving item in parse");
+                    } else {
+                        Log.d(TAG, "An error occurred when saving item in parse");
                     }
                 }
             });
             return;
         }
 
-        for (int i = 0; i < itemsClicked.length();++i){
-            try{
+        for (int i = 0; i < itemsClicked.length(); ++i) {
+            try {
                 JSONObject itemAlreadyClicked = (JSONObject) itemsClicked.get(i);
                 String itemId = (String) itemAlreadyClicked.get("objectId");
 
@@ -190,42 +190,42 @@ public class ProductDetailActivity extends AppCompatActivity {
                 query.getInBackground(itemId, new GetCallback<ClickedItem>() {
                     @Override
                     public void done(ClickedItem object, ParseException e) {
-                        if (e == null){
+                        if (e == null) {
                             String imageUrl = object.getProductImageUrl();
                             imageUrlSet.add(imageUrl);
 
                             final int val = finalI;
 
-                            if (val == itemsClicked.length() -1){
-                                if (!imageUrlSet.contains(clickedItem.getProductImageUrl())){
-                                    Log.d(TAG,"This is a case of an brand new product");
+                            if (val == itemsClicked.length() - 1) {
+                                if (!imageUrlSet.contains(clickedItem.getProductImageUrl())) {
+                                    Log.d(TAG, "This is a case of an brand new product");
                                     clickedItem.saveInBackground(new SaveCallback() {
                                         @Override
                                         public void done(ParseException e) {
-                                            if (e == null){
+                                            if (e == null) {
                                                 ParseUser currentUser = ParseUser.getCurrentUser();
-                                                currentUser.addUnique("clickedItems",clickedItem);
+                                                currentUser.addUnique("clickedItems", clickedItem);
                                                 currentUser.saveInBackground();
-                                                Log.d(TAG,clickedItem.getProductImageUrl() + "was added on Parse");
-                                            } else{
-                                                Log.d(TAG,"Unable to add item to Parse");
+                                                Log.d(TAG, clickedItem.getProductImageUrl() + "was added on Parse");
+                                            } else {
+                                                Log.d(TAG, "Unable to add item to Parse");
                                             }
                                         }
                                     });
-                                }else{
-                                    Log.d(TAG,"This is the case of an already viewed item from the user");
+                                } else {
+                                    Log.d(TAG, "This is the case of an already viewed item from the user");
 
                                 }
                             }
 
-                        } else{
-                            Log.d(TAG,"There was an error with fetching this data");
+                        } else {
+                            Log.d(TAG, "There was an error with fetching this data");
                         }
                     }
                 });
 
 
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

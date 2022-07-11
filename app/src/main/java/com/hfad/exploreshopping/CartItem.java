@@ -15,9 +15,10 @@ public class CartItem extends ParseObject {
     public static final String KEY_PRODUCT_IMAGE_URL = "productImageUrl";
 
 
-    public CartItem(){}
+    public CartItem() {
+    }
 
-    public CartItem(SuggestedItem suggestedItem){
+    public CartItem(SuggestedItem suggestedItem) {
         //Add to the cartItems
         setProductName(suggestedItem.getProductName());
         setProductDetailUrl(suggestedItem.getProductDetailUrl());
@@ -27,40 +28,62 @@ public class CartItem extends ParseObject {
         setProductPrice(suggestedItem.getProductPrice());
     }
 
-    public String getProductName(){
+    public String getProductName() {
         return getString(KEY_PRODUCT_NAME);
     }
 
-    public String getProductPrice(){return getString(KEY_PRODUCT_PRICE);}
+    public String getProductPrice() {
+        return getString(KEY_PRODUCT_PRICE);
+    }
 
-    public  String getProductOriginalPrice(){
+    public String getProductOriginalPrice() {
         return getString(KEY_PRODUCT_ORIGINAL_PRICE);
     }
 
-    public String getProductRatings(){return getString(KEY_PRODUCT_RATINGS);};
+    public String getProductRatings() {
+        return getString(KEY_PRODUCT_RATINGS);
+    }
 
-    public String getProductDetailUrl(){return getString(KEY_PRODUCT_DETAIL_URL);};
+    ;
 
-    public String getProductImageUrl(){return getString(KEY_PRODUCT_IMAGE_URL);};
+    public String getProductDetailUrl() {
+        return getString(KEY_PRODUCT_DETAIL_URL);
+    }
 
-    public void setProductName(String name){put(KEY_PRODUCT_NAME,name);}
 
-    public void setProductPrice(String price){put(KEY_PRODUCT_PRICE,price);}
+    public String getProductImageUrl() {
+        return getString(KEY_PRODUCT_IMAGE_URL);
+    }
 
-    public void setProductOriginalPrice(String price){
-        if (price == null){
+
+    public void setProductName(String name) {
+        put(KEY_PRODUCT_NAME, name);
+    }
+
+    public void setProductPrice(String price) {
+        put(KEY_PRODUCT_PRICE, price);
+    }
+
+    public void setProductOriginalPrice(String price) {
+        if (price == null) {
             return;
         }
-        put(KEY_PRODUCT_ORIGINAL_PRICE,price);}
+        put(KEY_PRODUCT_ORIGINAL_PRICE, price);
+    }
 
-    public void setProductRatings(String ratings){
-        if (ratings == null || ratings == "null"){
+    public void setProductRatings(String ratings) {
+        if (ratings == null || ratings == "null") {
             return;
         }
-        put(KEY_PRODUCT_RATINGS,ratings);}
+        put(KEY_PRODUCT_RATINGS, ratings);
+    }
 
-    public void setProductDetailUrl(String detailUrl){put(KEY_PRODUCT_DETAIL_URL,detailUrl);}
+    public void setProductDetailUrl(String detailUrl) {
+        put(KEY_PRODUCT_DETAIL_URL, detailUrl);
+    }
 
-    public void setProductImageUrl(String imageUrl){put(KEY_PRODUCT_IMAGE_URL,imageUrl);}
+    public void setProductImageUrl(String imageUrl) {
+        put(KEY_PRODUCT_IMAGE_URL, imageUrl);
+    }
 
 }

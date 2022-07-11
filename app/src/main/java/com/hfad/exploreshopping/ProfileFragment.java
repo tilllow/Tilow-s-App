@@ -65,30 +65,30 @@ public class ProfileFragment extends Fragment {
 
         //
 
-        populateUserInfo("userPersonalName",tvUsername);
-        populateUserInfo("userPhoneNumber",tvPhoneNumber);
-        populateUserInfo("userEmailAddress",tvEmailAddress);
+        populateUserInfo("userPersonalName", tvUsername);
+        populateUserInfo("userPhoneNumber", tvPhoneNumber);
+        populateUserInfo("userEmailAddress", tvEmailAddress);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
-        if (currentUser == null){
+        if (currentUser == null) {
             return;
         }
 
         ParseFile parseFile = currentUser.getParseFile("ProfileImage");
-        if (parseFile == null || parseFile.getUrl() == null){
-            Log.d(TAG,"Nothing was passed in here");
-        } else{
+        if (parseFile == null || parseFile.getUrl() == null) {
+            Log.d(TAG, "Nothing was passed in here");
+        } else {
             Glide.with(getContext()).load(parseFile.getUrl()).into(ivAccountPicture);
-            Log.d(TAG,"This is the file's URL " + parseFile.getUrl());
-            Log.d(TAG,"Is it not interesting how this piece of code manages to run all of the time");
+            Log.d(TAG, "This is the file's URL " + parseFile.getUrl());
+            Log.d(TAG, "Is it not interesting how this piece of code manages to run all of the time");
         }
 
         tvResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(),ForgotPasswordActivity.class);
-                intent.putExtra("EXTRA_CODE",1);
+                Intent intent = new Intent(getContext(), ForgotPasswordActivity.class);
+                intent.putExtra("EXTRA_CODE", 1);
                 startActivity(intent);
             }
         });
@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer,new FragmentEditProfile()).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, new FragmentEditProfile()).commit();
             }
         });
 
@@ -106,11 +106,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer,new FragmentEditProfile()).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, new FragmentEditProfile()).commit();
             }
         });
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             sbThemeSwitch.setChecked(false);
         } else {
             sbThemeSwitch.setChecked(true);
@@ -120,19 +120,19 @@ public class ProfileFragment extends Fragment {
         sbThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                } else{
+                } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
             }
         });
     }
 
-    private void populateUserInfo(String attribute, TextView view){
+    private void populateUserInfo(String attribute, TextView view) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         String temp = currentUser.getString(attribute);
-        if (temp != null){
+        if (temp != null) {
             view.setText(temp);
         }
 

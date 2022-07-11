@@ -22,10 +22,10 @@ public class PurchaseItem extends ParseObject {
     public static final String KEY_PRODUCT_CREATED_AT = "createdAt";
 
 
+    public PurchaseItem() {
+    }
 
-    public PurchaseItem(){}
-
-    public PurchaseItem(SuggestedItem suggestedItem){
+    public PurchaseItem(SuggestedItem suggestedItem) {
         // Add to the purchaseItems
         setProductName(suggestedItem.getProductName());
         setProductDetailUrl(suggestedItem.getProductDetailUrl());
@@ -35,7 +35,7 @@ public class PurchaseItem extends ParseObject {
         setProductPrice(suggestedItem.getProductPrice());
     }
 
-    public PurchaseItem(CartItem cartItem){
+    public PurchaseItem(CartItem cartItem) {
         setProductName(cartItem.getProductName());
         setProductDetailUrl(cartItem.getProductDetailUrl());
         setProductImageUrl(cartItem.getProductImageUrl());
@@ -44,47 +44,71 @@ public class PurchaseItem extends ParseObject {
         setProductPrice(cartItem.getProductPrice());
     }
 
-    public String getProductName(){
+    public String getProductName() {
         return getString(KEY_PRODUCT_NAME);
     }
 
-    public String getProductPrice(){return getString(KEY_PRODUCT_PRICE);}
+    public String getProductPrice() {
+        return getString(KEY_PRODUCT_PRICE);
+    }
 
-    public String getPurchaseDate(){
+    public String getPurchaseDate() {
         Date purchaseDate = getCreatedAt();
         SimpleDateFormat fmtOut = new SimpleDateFormat("MM/dd/yyyy");
         String date = fmtOut.format(purchaseDate);
         return date;
     }
 
-    public  String getProductOriginalPrice(){
+    public String getProductOriginalPrice() {
         return getString(KEY_PRODUCT_ORIGINAL_PRICE);
     }
 
-    public String getProductRatings(){return getString(KEY_PRODUCT_RATINGS);};
+    public String getProductRatings() {
+        return getString(KEY_PRODUCT_RATINGS);
+    }
 
-    public String getProductDetailUrl(){return getString(KEY_PRODUCT_DETAIL_URL);};
+    ;
 
-    public String getProductImageUrl(){return getString(KEY_IMAGE_URL);};
+    public String getProductDetailUrl() {
+        return getString(KEY_PRODUCT_DETAIL_URL);
+    }
 
-    public void setProductName(String name){put(KEY_PRODUCT_NAME,name);}
+    ;
 
-    public void setProductPrice(String price){put(KEY_PRODUCT_PRICE,price);}
+    public String getProductImageUrl() {
+        return getString(KEY_IMAGE_URL);
+    }
 
-    public void setProductOriginalPrice(String price){
-        if (price == null || price.equals("null")){
+    ;
+
+    public void setProductName(String name) {
+        put(KEY_PRODUCT_NAME, name);
+    }
+
+    public void setProductPrice(String price) {
+        put(KEY_PRODUCT_PRICE, price);
+    }
+
+    public void setProductOriginalPrice(String price) {
+        if (price == null || price.equals("null")) {
             return;
         }
-        put(KEY_PRODUCT_ORIGINAL_PRICE,price);}
+        put(KEY_PRODUCT_ORIGINAL_PRICE, price);
+    }
 
-    public void setProductRatings(String ratings){
-        if (ratings == null || ratings.equals("null")){
+    public void setProductRatings(String ratings) {
+        if (ratings == null || ratings.equals("null")) {
             return;
         }
-        put(KEY_PRODUCT_RATINGS,ratings);}
+        put(KEY_PRODUCT_RATINGS, ratings);
+    }
 
-    public void setProductDetailUrl(String detailUrl){put(KEY_PRODUCT_DETAIL_URL,detailUrl);}
+    public void setProductDetailUrl(String detailUrl) {
+        put(KEY_PRODUCT_DETAIL_URL, detailUrl);
+    }
 
-    public void setProductImageUrl(String imageUrl){put(KEY_IMAGE_URL,imageUrl);}
+    public void setProductImageUrl(String imageUrl) {
+        put(KEY_IMAGE_URL, imageUrl);
+    }
 
 }
