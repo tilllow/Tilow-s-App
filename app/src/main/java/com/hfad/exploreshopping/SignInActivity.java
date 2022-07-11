@@ -179,7 +179,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e != null){
-                    displayAlertMessage("Login","Unable to login");
+                    displayAlertMessage("Login",e.getMessage());
                     return;
                 }
 

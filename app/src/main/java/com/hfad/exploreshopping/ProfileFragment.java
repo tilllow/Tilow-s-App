@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     TextView tvPhoneNumber;
     TextView tvEmailAddress;
     TextView tvResetPassword;
+    ImageButton ibEditProfileInfo;
     TextView tvThemeName;
     Switch sbThemeSwitch;
     ImageView ivAccountPicture;
@@ -59,6 +61,7 @@ public class ProfileFragment extends Fragment {
         tvThemeName = view.findViewById(R.id.tvThemeName);
         sbThemeSwitch = view.findViewById(R.id.sbThemeSwitch);
         ivAccountPicture = view.findViewById(R.id.ivAccountPIcture);
+        ibEditProfileInfo = view.findViewById(R.id.ibEditProfileInfo);
 
         //
 
@@ -87,6 +90,14 @@ public class ProfileFragment extends Fragment {
                 Intent intent = new Intent(getContext(),ForgotPasswordActivity.class);
                 intent.putExtra("EXTRA_CODE",1);
                 startActivity(intent);
+            }
+        });
+
+        ibEditProfileInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer,new FragmentEditProfile()).commit();
             }
         });
 

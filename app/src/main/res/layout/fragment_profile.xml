@@ -32,7 +32,7 @@
                 <TextView
                     android:id="@+id/tvUsername"
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="5dp"
                     android:gravity="bottom"
@@ -266,4 +266,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.39" />
+
+    <ImageButton
+        android:id="@+id/ibEditProfileInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Edit button"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/tvInformationTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvInformationTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
