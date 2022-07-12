@@ -1,6 +1,8 @@
 package com.hfad.exploreshopping;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,15 +11,18 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hfad.exploreshopping.FragmentEditProfile;
@@ -37,6 +42,8 @@ public class ProfileFragment extends Fragment {
     TextView tvThemeName;
     Switch sbThemeSwitch;
     ImageView ivAccountPicture;
+    Button btn;
+    SharedPreferences sharedPreferences = null;
 
 
     public ProfileFragment() {
@@ -52,6 +59,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         tvEditProfile = view.findViewById(R.id.tvEditProfile);
         tvUsername = view.findViewById(R.id.etNameField);
@@ -60,10 +68,17 @@ public class ProfileFragment extends Fragment {
         tvResetPassword = view.findViewById(R.id.tvResetPassword);
         tvThemeName = view.findViewById(R.id.tvThemeName);
         sbThemeSwitch = view.findViewById(R.id.sbThemeSwitch);
-        ivAccountPicture = view.findViewById(R.id.ivAccountPIcture);
+        ivAccountPicture = view.findViewById(R.id.ivAccountPicture);
+        btn = view.findViewById(R.id.btnThemeTest);
         ibEditProfileInfo = view.findViewById(R.id.ibEditProfileInfo);
+        sharedPreferences = getActivity().getSharedPreferences("night",0);
+        Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
 
         //
+        if (booleanValue) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            sbThemeSwitch.setChecked(true);
+        }
 
         populateUserInfo("userPersonalName", tvUsername);
         populateUserInfo("userPhoneNumber", tvPhoneNumber);
@@ -89,6 +104,14 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ForgotPasswordActivity.class);
                 intent.putExtra("EXTRA_CODE", 1);
+                startActivity(intent);
+            }
+        });
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),EditThemeTest.class);
                 startActivity(intent);
             }
         });
@@ -120,13 +143,32 @@ public class ProfileFragment extends Fragment {
         sbThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                } else {
+                if (!isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    sbThemeSwitch.setChecked(true);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("night_mode",true);
+                    editor.commit();
+                    reset();
+                    Toast.makeText(getContext(),"Light mode is off",Toast.LENGTH_SHORT).show();
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    sbThemeSwitch.setChecked(false);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("night_mode",false);
+                    editor.commit();
+                    reset();
+                    Toast.makeText(getContext(),":Light mode is on",Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
+    }
+
+    private void reset() {
+        Intent intent = getActivity().getIntent();
+        getActivity().finish();
+        startActivity(intent);
     }
 
     private void populateUserInfo(String attribute, TextView view) {

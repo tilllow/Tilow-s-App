@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_lock.xml" value="0.1015" />
         <entry key="app/src/main/res/drawable-v24/ic_person.xml" value="0.1015" />
         <entry key="app/src/main/res/drawable-v24/input_bg.xml" value="0.1015" />
+        <entry key="app/src/main/res/drawable/ic_baseline_lightbulb_24.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.2955" />
         <entry key="app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.102" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/drawable/progress_bar.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_cart_item.xml" value="0.9369791666666667" />
+        <entry key="app/src/main/res/layout/activity_edit_theme_test.xml" value="0.4625126646403242" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.32916666666666666" />
         <entry key="app/src/main/res/layout/activity_individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.38958333333333334" />
@@ -37,6 +39,7 @@
         <entry key="app/src/main/res/layout/individual_item.xml" value="0.573822463768116" />
         <entry key="app/src/main/res/layout/individual_store.xml" value="0.375" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.375" />
+        <entry key="app/src/main/res/menu/settings_menu_bar.xml" value="0.45" />
         <entry key="app/src/main/res/xml/fileprovider.xml" value="0.95" />
       </map>
     </option>

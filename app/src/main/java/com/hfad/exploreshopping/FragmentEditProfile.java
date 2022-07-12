@@ -63,7 +63,7 @@ public class FragmentEditProfile extends Fragment {
         etPhoneNumberField = view.findViewById(R.id.etPhoneNumberField);
         etEmailAddressField = view.findViewById(R.id.etEmailAddressField);
         ibTakePhoto = view.findViewById(R.id.ibTakePhoto);
-        ivAccountPicture = view.findViewById(R.id.ivAccountPIcture);
+        ivAccountPicture = view.findViewById(R.id.ivEditAccountPIcture);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         etNameField.setText(currentUser.getString("userPersonalName"));
