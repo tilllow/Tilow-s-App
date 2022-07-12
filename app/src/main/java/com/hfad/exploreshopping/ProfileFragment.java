@@ -39,11 +39,7 @@ public class ProfileFragment extends Fragment {
     TextView tvEmailAddress;
     TextView tvResetPassword;
     ImageButton ibEditProfileInfo;
-    TextView tvThemeName;
-    Switch sbThemeSwitch;
     ImageView ivAccountPicture;
-    Button btn;
-    SharedPreferences sharedPreferences = null;
 
 
     public ProfileFragment() {
@@ -66,19 +62,9 @@ public class ProfileFragment extends Fragment {
         tvPhoneNumber = view.findViewById(R.id.etPhoneNumberField);
         tvEmailAddress = view.findViewById(R.id.etEmailAddressField);
         tvResetPassword = view.findViewById(R.id.tvResetPassword);
-        tvThemeName = view.findViewById(R.id.tvThemeName);
-        sbThemeSwitch = view.findViewById(R.id.sbThemeSwitch);
         ivAccountPicture = view.findViewById(R.id.ivAccountPicture);
-        btn = view.findViewById(R.id.btnThemeTest);
         ibEditProfileInfo = view.findViewById(R.id.ibEditProfileInfo);
-        sharedPreferences = getActivity().getSharedPreferences("night",0);
-        Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
 
-        //
-        if (booleanValue) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            sbThemeSwitch.setChecked(true);
-        }
 
         populateUserInfo("userPersonalName", tvUsername);
         populateUserInfo("userPhoneNumber", tvPhoneNumber);
@@ -96,7 +82,6 @@ public class ProfileFragment extends Fragment {
         } else {
             Glide.with(getContext()).load(parseFile.getUrl()).into(ivAccountPicture);
             Log.d(TAG, "This is the file's URL " + parseFile.getUrl());
-            Log.d(TAG, "Is it not interesting how this piece of code manages to run all of the time");
         }
 
         tvResetPassword.setOnClickListener(new View.OnClickListener() {
@@ -108,13 +93,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(),EditThemeTest.class);
-                startActivity(intent);
-            }
-        });
 
         ibEditProfileInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,42 +111,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            sbThemeSwitch.setChecked(false);
-        } else {
-            sbThemeSwitch.setChecked(true);
-        }
-
-
-        sbThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    sbThemeSwitch.setChecked(true);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode",true);
-                    editor.commit();
-                    reset();
-                    Toast.makeText(getContext(),"Light mode is off",Toast.LENGTH_SHORT).show();
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    sbThemeSwitch.setChecked(false);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode",false);
-                    editor.commit();
-                    reset();
-                    Toast.makeText(getContext(),":Light mode is on",Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-    }
-
-    private void reset() {
-        Intent intent = getActivity().getIntent();
-        getActivity().finish();
-        startActivity(intent);
     }
 
     private void populateUserInfo(String attribute, TextView view) {
