@@ -59,7 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if (e == null) {
                             if (code == 1) {
-                                alertDisplayer("Password reset", "Verification email sent + \nFollow instructions to reset the account password");
+                                alertDisplayer("Password reset", "Verification email sent" + "\nFollow instructions to reset the account password");
                                 return;
                             }
                             alertDisplayer("Password reset", "Verification email sent" +

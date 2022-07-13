@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="170dp"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="10dp"
+    android:background="@color/item_color"
+    android:backgroundTint="@color/item_color"
     android:elevation="3dp"
     app:cardCornerRadius="3dp">
 

@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="0dp">
 
         <ProgressBar
@@ -53,8 +54,10 @@
         <GridView
             android:id="@+id/gvStores"
             android:layout_width="wrap_content"
-            android:layout_height="400dp"
+            android:layout_height="420dp"
             android:layout_marginTop="5dp"
+            android:background="@color/item_color"
+            android:backgroundTint="@color/item_color"
             android:horizontalSpacing="5dp"
             android:numColumns="2"
             android:verticalSpacing="5dp"

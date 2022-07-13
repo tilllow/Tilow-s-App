@@ -47,9 +47,9 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-//        if(ParseUser.getCurrentUser() != null){
-//            launchMainActivity();
-//        }
+        if(ParseUser.getCurrentUser() != null){
+            launchMainActivity();
+        }
 
 
         etUsername = findViewById(R.id.etUsername);

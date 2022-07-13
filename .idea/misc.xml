@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable/ic_email_dark.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.4195" />
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/progress_bar.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.1" />
@@ -32,7 +33,7 @@
         <entry key="app/src/main/res/layout/activity_store.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_cart_items.xml" value="0.9510416666666667" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2949438202247191" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_purchased_items.xml" value="0.5371376811594203" />

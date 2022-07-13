@@ -28,7 +28,7 @@ public class EditThemeTest extends AppCompatActivity {
         switchChangeTheme = findViewById(R.id.switchChangeTheme);
         tvDone = findViewById(R.id.tvDone);
         sharedPreferences = getSharedPreferences("night",0);
-        tvThemeChange = findViewById(R.id.tvThemeName);
+        tvThemeChange = findViewById(R.id.tvThemeMode);
         Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
 
         //
@@ -37,11 +37,11 @@ public class EditThemeTest extends AppCompatActivity {
             switchChangeTheme.setChecked(true);
         }
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            switchChangeTheme.setChecked(false);
-        } else {
-            switchChangeTheme.setChecked(true);
-        }
+//        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+//            switchChangeTheme.setChecked(false);
+//        } else {
+//            switchChangeTheme.setChecked(true);
+//        }
 
         tvDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class EditThemeTest extends AppCompatActivity {
         switchChangeTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
+                if (isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     switchChangeTheme.setChecked(true);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -69,7 +69,7 @@ public class EditThemeTest extends AppCompatActivity {
                     editor.putBoolean("night_mode",false);
                     editor.commit();
                     reset();
-                    Toast.makeText(EditThemeTest.this,":Light mode is on",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditThemeTest.this,"Dark mode is off",Toast.LENGTH_SHORT).show();
 
                 }
             }

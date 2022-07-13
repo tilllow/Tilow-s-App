@@ -1,5 +1,7 @@
 package com.hfad.exploreshopping;
 
+import static com.hfad.exploreshopping.R.color.item_color;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,6 +89,7 @@ public class HomeFragment extends Fragment {
 
         customAdapter = new CustomAdapter(storeList, getContext());
         gvStores.setAdapter(customAdapter);
+        //gvStores.setBackgroundColor(getResources().getColor(R.color.item_color));
 
         gvStores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

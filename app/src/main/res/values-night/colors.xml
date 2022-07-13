@@ -13,4 +13,5 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="black">#FF000000</color>
     <color name="red">#FF0000</color>
+    <color name="item_color">#171717</color>
 </resources>

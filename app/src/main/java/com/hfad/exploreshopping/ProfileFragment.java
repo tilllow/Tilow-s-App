@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment {
     TextView tvResetPassword;
     ImageButton ibEditProfileInfo;
     ImageView ivAccountPicture;
+    TextView tvLogoutClick;
 
 
     public ProfileFragment() {
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
         tvResetPassword = view.findViewById(R.id.tvResetPassword);
         ivAccountPicture = view.findViewById(R.id.ivAccountPicture);
         ibEditProfileInfo = view.findViewById(R.id.ibEditProfileInfo);
+        tvLogoutClick = view.findViewById(R.id.tvLogoutClick);
 
 
         populateUserInfo("userPersonalName", tvUsername);
@@ -71,6 +73,18 @@ public class ProfileFragment extends Fragment {
         populateUserInfo("userEmailAddress", tvEmailAddress);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
+
+        tvLogoutClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOutInBackground();
+                Intent intent = new Intent(getContext(), SignInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         if (currentUser == null) {
             return;
