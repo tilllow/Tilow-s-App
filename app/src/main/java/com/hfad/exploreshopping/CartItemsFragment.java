@@ -86,7 +86,7 @@ public class CartItemsFragment extends Fragment {
             public void done(CartItem object, ParseException e) {
                 if (e == null) {
                     cartItemsList.add(object);
-                    cartItemsAdapter.notifyDataSetChanged();
+                    cartItemsAdapter.notifyItemInserted(cartItemsList.size());
                 } else {
                     // TODO: Decide how to handle any error that may result later
                 }

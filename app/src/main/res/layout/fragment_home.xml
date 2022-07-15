@@ -12,6 +12,17 @@
         android:layout_height="match_parent"
         android:layout_margin="0dp">
 
+        <ImageView
+            android:id="@+id/ivScanQrCode"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_code_scanner"
+            app:layout_constraintBottom_toBottomOf="@+id/svSearchProduct"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/svSearchProduct"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
@@ -29,12 +40,11 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/svSearchProduct"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/searchview_background"
             app:iconifiedByDefault="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@id/const_layout"
             app:layout_constraintTop_toTopOf="@id/const_layout"
             app:queryBackground="@null"
@@ -75,6 +85,14 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gvStores" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,7 +18,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
@@ -54,7 +53,7 @@ public class SignInActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etUserEmail);
-        btnLogin = findViewById(R.id.btnLoginToShop);
+        btnLogin = findViewById(R.id.btnScanNow);
         tvSignUp = findViewById(R.id.tvSignUp);
         btnFacebook = findViewById(R.id.btnFacebook);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);

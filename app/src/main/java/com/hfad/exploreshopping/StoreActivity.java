@@ -1,6 +1,8 @@
 package com.hfad.exploreshopping;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,17 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebSettings;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.load.model.LazyHeaders;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.facebook.stetho.json.annotation.JsonValue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,30 +37,42 @@ public class StoreActivity extends AppCompatActivity {
     private ItemsAdapter adapter;
     private ProgressBar pbStoreItemLoading;
     private SearchView svSearchStore;
-    TextView tvStoreWelcomeMessage;
-    TextView tvAmazonTodayDeals;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText etPriceMin, etPriceMax;
+    private Button btnSave, btnCancel;
+    private TextView tvLowerPrice;
+    private TextView tvHigherPrice;
+    private TextView tvAmazonTodayDeals;
+    private AppCompatButton btnFilter;
+    private int lowerPrice = 0;
+    private int upperPrice = 0;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-        int position = getIntent().getIntExtra("EXTRA_POSITION", 0);
+        position = getIntent().getIntExtra("EXTRA_POSITION", 0);
 
         itemList = new ArrayList<>();
-        tvStoreWelcomeMessage = findViewById(R.id.tvStoreWelcomeMessage);
+        tvLowerPrice = findViewById(R.id.tvLowerPrice);
+        tvHigherPrice = findViewById(R.id.tvHigherPrice);
         tvAmazonTodayDeals = findViewById(R.id.tvAmazonTodayDeals);
         svSearchStore = findViewById(R.id.svSearchStore);
         rvNikeShoes = findViewById(R.id.rvNikeShoes);
         pbStoreItemLoading = findViewById(R.id.pbStoreItemLoading);
+        btnFilter = findViewById(R.id.btnPriceFilter);
 
         adapter = new ItemsAdapter(this, itemList);
         rvNikeShoes.setAdapter(adapter);
         rvNikeShoes.setLayoutManager(new GridLayoutManager(this, 2));
-
+        tvLowerPrice.setText("Low : 0");
+        tvHigherPrice.setText("High : ...");
 
         switch (position) {
             case 0:
-                tvStoreWelcomeMessage.setText("Welcome to the Nike Store");
                 svSearchStore.setQueryHint("Search Nike Shoes here...");
                 requestNikeProducts();
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -77,7 +90,7 @@ public class StoreActivity extends AppCompatActivity {
                 break;
             case 1:
                 requestAsosProducts();
-                tvStoreWelcomeMessage.setText("Welcome to the Asos Store");
+                //tvStoreWelcomeMessage.setText("Welcome to the Asos Store");
                 svSearchStore.setQueryHint("Search Asos products here...");
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -93,7 +106,7 @@ public class StoreActivity extends AppCompatActivity {
                 });
                 break;
             case 2:
-                tvStoreWelcomeMessage.setText("Welcome to the Amazon Store");
+                //tvStoreWelcomeMessage.setText("Welcome to the Amazon Store");
                 svSearchStore.setQueryHint("Search Amazon products here...");
                 tvAmazonTodayDeals.setVisibility(View.VISIBLE);
                 requestAmazonTodayDeals();
@@ -113,7 +126,7 @@ public class StoreActivity extends AppCompatActivity {
                 });
                 break;
             case 3:
-                tvStoreWelcomeMessage.setText("Welcome to the Shoes Collection Store");
+                //tvStoreWelcomeMessage.setText("Welcome to the Shoes Collection Store");
                 svSearchStore.setQueryHint("Search your shoes here...");
                 requestShoesCollections();
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -130,6 +143,15 @@ public class StoreActivity extends AppCompatActivity {
                 });
                 break;
         }
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createFilterOptionsDialog();
+            }
+        });
+
+        int priceMin = 0, priceMax = 0;
     }
 
     private void filterList(String text) {
@@ -172,7 +194,10 @@ public class StoreActivity extends AppCompatActivity {
                         String shoePrice = jsonObject.getString("price");
 
                         SuggestedItem shoeItem = new SuggestedItem(shoeName, shoeImageUrl, shoePrice, productDetailUrl, null, null);
-                        items.add(shoeItem);
+                        if (filterBasedOnPrice(shoeItem, lowerPrice, upperPrice)) {
+                            items.add(shoeItem);
+                        }
+
                     }
 
                     itemList.addAll(items);
@@ -368,29 +393,40 @@ public class StoreActivity extends AppCompatActivity {
         requestHeaders.put("X-RapidAPI-Host", "amazon60.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
-        // new changes
 
         client.get(amazonApiEndpoint, requestHeaders, requestParams, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 JSONObject jsonObject = json.jsonObject;
 
-
                 try {
                     List<SuggestedItem> items = new ArrayList<>();
                     JSONArray products = jsonObject.getJSONArray("results");
-                    for (int i = 0; i < products.length(); ++i) {
+                    for (int i = 0; i < Math.min(25, products.length()); ++i) {
                         JSONObject product = (JSONObject) products.get(i);
 
                         String productName = product.getString("name");
                         String productImageUrl = product.getString("image");
                         String productDetailUrl = product.getString("url");
                         String productPrice = product.getString("price_string");
-                        String productRatings = String.valueOf(product.getInt("stars"));
+                        String productRatings = null;
+
+                        try {
+                            productRatings = String.valueOf(product.getInt("stars"));
+                        } catch (Exception e) {
+                            Log.d(TAG, "This is the exception" + e);
+                        }
+
 
                         SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, productRatings);
-                        items.add(item);
-                        // Made some new changes to the app
+
+                        if (filterBasedOnPrice(item, lowerPrice, upperPrice)) {
+                            Log.d(TAG, "These are the lower and upper prices respectively " + lowerPrice + " " + upperPrice);
+                            items.add(item);
+                        } else{
+                            Log.d(TAG,"The filtered thing is returning false in this query");
+                        }
+
                     }
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
@@ -411,6 +447,94 @@ public class StoreActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
                 Log.i(TAG, "The request has failed", throwable);
+            }
+        });
+    }
+
+    private boolean filterBasedOnPrice(SuggestedItem product, int lowerBound, int upperBound) {
+        boolean fallsWithinRange = true;
+        int itemPrice = 0;
+
+        try {
+            itemPrice = Integer.parseInt(product.getProductPrice().substring(1));
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        Log.d(TAG, "" + itemPrice);
+        if (lowerBound > itemPrice) {
+            fallsWithinRange = false;
+        } else if (upperBound > 0 && upperBound < itemPrice) {
+            fallsWithinRange = false;
+        }
+        if (upperBound < lowerBound) {
+            fallsWithinRange = false;
+        }
+
+
+        return fallsWithinRange;
+    }
+
+    private void filterEntireArray(){
+
+        List<SuggestedItem> temp = new ArrayList<>();
+        for (int i = 0; i < itemList.size(); ++i){
+            SuggestedItem suggestedItem = itemList.get(i);
+            if (filterBasedOnPrice(suggestedItem,lowerPrice,upperPrice)){
+                temp.add(suggestedItem);
+                Log.d(TAG,"Inside the filtering block");
+                Log.d(TAG,"This is the price of the item inside the filtering block " + suggestedItem.getProductPrice());
+            }
+        }
+        itemList.clear();
+        itemList.addAll(temp);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void createFilterOptionsDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View filterPopupView = getLayoutInflater().inflate(R.layout.popup, null);
+        etPriceMin = (EditText) filterPopupView.findViewById(R.id.etLowerPriceEntry);
+        etPriceMax = (EditText) filterPopupView.findViewById(R.id.etHighPriceEntry);
+
+        btnSave = (AppCompatButton) filterPopupView.findViewById(R.id.btnSave);
+        btnCancel = (AppCompatButton) filterPopupView.findViewById(R.id.btnCancel);
+
+        dialogBuilder.setView(filterPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String lowerBound = etPriceMin.getText().toString();
+                String upperBound = etPriceMax.getText().toString();
+
+                try {
+                    lowerPrice = Integer.parseInt(lowerBound);
+                    upperPrice = Integer.parseInt(upperBound);
+
+                    if (lowerPrice < 0 || upperPrice < 0) {
+                        Toast.makeText(StoreActivity.this, "Entries must be positive", Toast.LENGTH_SHORT);
+                    } else {
+                        dialog.dismiss();
+                        tvLowerPrice.setText("Low : $" + Integer.toString(lowerPrice));
+                        tvHigherPrice.setText("High : $" + Integer.toString(upperPrice));
+                        if (position != 2){
+                            filterEntireArray();
+                        }
+
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(StoreActivity.this, "Please enter a valid price", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }

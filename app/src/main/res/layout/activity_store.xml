@@ -12,14 +12,14 @@
         android:id="@+id/svSearchStore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/searchview_background"
         android:queryHint="Search here..."
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStoreWelcomeMessage"
+        app:layout_constraintTop_toBottomOf="@+id/btnPriceFilter"
         app:queryHint="Search here..." />
 
     <ProgressBar
@@ -35,19 +35,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStoreWelcomeMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLowerPrice" />
 
     <TextView
-        android:id="@+id/tvStoreWelcomeMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvLowerPrice"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="2dp"
         android:alpha="0.8"
-        android:text="Welcome to the Nike Store"
+        android:background="@drawable/searchview_background"
+        android:gravity="center"
+        android:hint="lowerPrice"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
         android:textColor="@color/color_text"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColorHint="@color/hint_color"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/tvHigherPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,8 +62,10 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAmazonTodayDeals" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAmazonTodayDeals"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvAmazonTodayDeals"
@@ -74,4 +80,43 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/svSearchStore" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPriceFilter"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Filter price"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHigherPrice"
+        app:layout_constraintEnd_toEndOf="@+id/svSearchStore"
+        app:layout_constraintTop_toTopOf="@+id/tvHigherPrice" />
+
+    <TextView
+        android:id="@+id/tvHigherPrice"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/searchview_background"
+        android:gravity="center"
+        android:hint="highPrice"
+        android:textColorHint="@color/hint_color"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
 </androidx.constraintlayout.widget.ConstraintLayout>

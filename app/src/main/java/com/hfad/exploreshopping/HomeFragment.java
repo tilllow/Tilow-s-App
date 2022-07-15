@@ -3,11 +3,13 @@ package com.hfad.exploreshopping;
 import static com.hfad.exploreshopping.R.color.item_color;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,11 +25,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -51,6 +56,7 @@ public class HomeFragment extends Fragment {
     private ItemsAdapter adapter;
     private RecyclerView rvFragmentItems;
     private SearchView svSearchProduct;
+    private ImageView ivScanQrCode;
     private ProgressBar progressBar;
     private GridView gvStores;
     private int images[] = {R.drawable.nike_photo, R.drawable.asos_logo, R.drawable.amazon_simple_logo, R.drawable.new_background};
@@ -71,7 +77,6 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -81,6 +86,7 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         gvStores = view.findViewById(R.id.gvStores);
         tvRecentlyViewed = view.findViewById(R.id.tvRecentlyViewed);
+        ivScanQrCode = view.findViewById(R.id.ivScanQrCode);
 
         for (int i = 0; i < names.length; ++i) {
             Store store = new Store(names[i], description[i], images[i]);
@@ -97,6 +103,16 @@ public class HomeFragment extends Fragment {
                 launchStoreActivity(position);
             }
         });
+
+        ivScanQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActivityQrCodeScanner.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
         svSearchProduct.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -281,4 +297,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
 }
