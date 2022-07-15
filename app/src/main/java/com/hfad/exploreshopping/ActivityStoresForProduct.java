@@ -22,11 +22,11 @@ public class ActivityStoresForProduct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores_for_product);
-        qrCodeProduct qrCodeProduct = Parcels.unwrap(getIntent().getParcelableExtra("EXTRA_QR_CODE_PRODUCT"));
+        qrCodeProduct qrCodeProduct = getIntent().getParcelableExtra("EXTRA_QR_CODE_PRODUCT");
         qrStoreList = new ArrayList<>();
         qrStoreList = qrCodeProduct.getProductStores();
         storesAdapter = new StoresAdapter(ActivityStoresForProduct.this,qrStoreList,qrCodeProduct);
-        rvQrStores = findViewById(R.id.rvQrProducts);
+        rvQrStores = findViewById(R.id.rvQrStores);
         rvQrStores.setAdapter(storesAdapter);
         rvQrStores.setLayoutManager(new LinearLayoutManager(ActivityStoresForProduct.this));
     }

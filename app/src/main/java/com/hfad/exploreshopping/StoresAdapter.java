@@ -77,6 +77,15 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
             tvQrProductPrice.setText(productStore.getProductCurrencySymbol() + productStore.getProductPrice());
             Glide.with(context).load(qrCodeProduct.getProductImageUrl()).into(ivQrStoreImage);
             tvLastUpdated.setText(productStore.getLastUpdated());
+
+            tvStoreDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context,StoreWebView.class);
+                    intent.putExtra("EXTRA_STORE_IMAGE_URL",productStore.getStoreUrl());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

@@ -67,7 +67,7 @@ public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.Vi
                     int pos = getAbsoluteAdapterPosition();
                     Intent intent = new Intent(context,ActivityStoresForProduct.class);
                     qrCodeProduct temp = qrCodeProducts.get(pos);
-                    intent.putExtra("EXTRA_QR_CODE_PRODUCT", Parcels.wrap(temp));
+                    intent.putExtra("EXTRA_QR_CODE_PRODUCT", (temp));
                     context.startActivity(intent);
                 }
             });
