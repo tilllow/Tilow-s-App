@@ -35,6 +35,8 @@
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_store.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/layout/activity_stores_for_product.xml" value="0.5760416666666667" />
+        <entry key="app/src/main/res/layout/all_stores_qr_product.xml" value="0.575" />
         <entry key="app/src/main/res/layout/fragment_cart_items.xml" value="0.4922027290448343" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2949438202247191" />

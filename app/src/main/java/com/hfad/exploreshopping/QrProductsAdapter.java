@@ -1,6 +1,7 @@
 package com.hfad.exploreshopping;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -58,6 +60,17 @@ public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.Vi
             tvQrProductDescription = itemView.findViewById(R.id.tvQrProductDetails);
             tvQrProductName = itemView.findViewById(R.id.tvQrProductTitle);
             ivQrProductImage = itemView.findViewById(R.id.ivQrProductPicture);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAbsoluteAdapterPosition();
+                    Intent intent = new Intent(context,ActivityStoresForProduct.class);
+                    qrCodeProduct temp = qrCodeProducts.get(pos);
+                    intent.putExtra("EXTRA_QR_CODE_PRODUCT", Parcels.wrap(temp));
+                    context.startActivity(intent);
+                }
+            });
         }
 
         public void bind(qrCodeProduct product){

@@ -1,11 +1,16 @@
 package com.hfad.exploreshopping;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class ProductStore {
     private String storeName;
     private String productCurrencySymbol;
     private String productPrice;
     private String storeUrl;
     private String lastUpdated;
+
+    public ProductStore(){}
 
     ProductStore(String storeName, String productCurrencySymbol, String productPrice, String storeUrl, String lastUpdated){
         this.storeName = storeName;

@@ -44,4 +44,5 @@
     <color name="black">#FF000000</color>
     <color name="red">#FF0000</color>
     <color name="item_color">#FFFFFFFF</color>
+    <color name="text_link_color">#50C878</color>
 </resources>
