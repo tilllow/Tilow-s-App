@@ -1,11 +1,10 @@
-package com.hfad.exploreshopping;
+package adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,8 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
+import com.hfad.exploreshopping.ProductDetailActivity;
+import com.hfad.exploreshopping.R;
+import com.hfad.exploreshopping.SuggestedItem;
 
 import org.parceler.Parcels;
 

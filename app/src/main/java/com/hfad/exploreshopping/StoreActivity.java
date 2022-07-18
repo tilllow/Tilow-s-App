@@ -28,11 +28,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapters.ItemsAdapter;
 import okhttp3.Headers;
 
 public class StoreActivity extends AppCompatActivity {
 
     private List<SuggestedItem> itemList;
+    private List<SuggestedItem> allItems = new ArrayList<>();
     public static final String TAG = "StoreActivity";
     private RecyclerView rvNikeShoes;
     private ItemsAdapter adapter;
@@ -186,6 +188,7 @@ public class StoreActivity extends AppCompatActivity {
                 Log.d(TAG, "OnSuccess");
                 JSONArray jsonArray = json.jsonArray;
                 try {
+                    allItems.clear();
                     List<SuggestedItem> items = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
@@ -195,6 +198,7 @@ public class StoreActivity extends AppCompatActivity {
                         String shoePrice = jsonObject.getString("price");
 
                         SuggestedItem shoeItem = new SuggestedItem(shoeName, shoeImageUrl, shoePrice, productDetailUrl, null, null);
+                        allItems.add(shoeItem);
                         if (filterBasedOnPrice(shoeItem, lowerPrice, upperPrice)) {
                             items.add(shoeItem);
                         }
@@ -241,6 +245,7 @@ public class StoreActivity extends AppCompatActivity {
                 try {
                     List<SuggestedItem> items = new ArrayList<>();
                     JSONArray jsonArray = jsonObject.getJSONArray("products");
+                    allItems.clear();
 
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject product = (JSONObject) jsonArray.get(i);
@@ -254,6 +259,7 @@ public class StoreActivity extends AppCompatActivity {
                         String originalPrice = oldPriceObject.getString("text");
 
                         SuggestedItem productItem = new SuggestedItem(name, productImageUrl, currentPrice, productDetailUrl, originalPrice, null);
+                        allItems.add(productItem);
                         items.add(productItem);
                     }
 
@@ -295,6 +301,7 @@ public class StoreActivity extends AppCompatActivity {
                     JSONArray docs = jsonObject.getJSONArray("deal_docs");
                     //itemList.clear();
                     List<SuggestedItem> items = new ArrayList<>();
+                    allItems.clear();
 
                     for (int i = 0; i < docs.length(); ++i) {
 
@@ -354,6 +361,7 @@ public class StoreActivity extends AppCompatActivity {
 
                 try {
                     List<SuggestedItem> items = new ArrayList<>();
+                    allItems.clear();
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject productObject = (JSONObject) jsonArray.getJSONObject(i);
                         String productName = productObject.getString("name");
@@ -401,6 +409,7 @@ public class StoreActivity extends AppCompatActivity {
                 JSONObject jsonObject = json.jsonObject;
 
                 try {
+                    allItems.clear();
                     List<SuggestedItem> items = new ArrayList<>();
                     JSONArray products = jsonObject.getJSONArray("results");
                     for (int i = 0; i < Math.min(25, products.length()); ++i) {
@@ -420,6 +429,7 @@ public class StoreActivity extends AppCompatActivity {
 
 
                         SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, productRatings);
+                        allItems.add(item);
 
                         if (filterBasedOnPrice(item, lowerPrice, upperPrice)) {
                             Log.d(TAG, "These are the lower and upper prices respectively " + lowerPrice + " " + upperPrice);
@@ -479,12 +489,10 @@ public class StoreActivity extends AppCompatActivity {
     private void filterEntireArray(){
 
         List<SuggestedItem> temp = new ArrayList<>();
-        for (int i = 0; i < itemList.size(); ++i){
-            SuggestedItem suggestedItem = itemList.get(i);
+        for (int i = 0; i < allItems.size(); ++i){
+            SuggestedItem suggestedItem = allItems.get(i);
             if (filterBasedOnPrice(suggestedItem,lowerPrice,upperPrice)){
                 temp.add(suggestedItem);
-                Log.d(TAG,"Inside the filtering block");
-                Log.d(TAG,"This is the price of the item inside the filtering block " + suggestedItem.getProductPrice());
             }
         }
         itemList.clear();
@@ -521,6 +529,7 @@ public class StoreActivity extends AppCompatActivity {
                         dialog.dismiss();
                         tvLowerPrice.setText("Low : $" + Integer.toString(lowerPrice));
                         tvHigherPrice.setText("High : $" + Integer.toString(upperPrice));
+                        Log.d(TAG,"The value of the position here is : " + position);
                         if (position != 2){
                             filterEntireArray();
                         }

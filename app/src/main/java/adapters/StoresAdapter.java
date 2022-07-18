@@ -1,4 +1,4 @@
-package com.hfad.exploreshopping;
+package adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
-import org.parceler.Parcels;
+import com.hfad.exploreshopping.ProductStore;
+import com.hfad.exploreshopping.R;
+import com.hfad.exploreshopping.StoreWebView;
+import com.hfad.exploreshopping.qrCodeProduct;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
     public static final String TAG = "StoresAdapter";
     private Context context;
     private List<ProductStore> productStoreList;
-    private qrCodeProduct qrCodeProduct;
+    private com.hfad.exploreshopping.qrCodeProduct qrCodeProduct;
 
     public StoresAdapter(Context context, List<ProductStore> productStoreList, qrCodeProduct qrCodeProduct) {
         this.context = context;

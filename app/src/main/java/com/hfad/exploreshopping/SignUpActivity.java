@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText etUserEmail;
     EditText etConfirmPassword;
     Button btnCreateAccount;
+    TextView tvPasswordMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class SignUpActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.etInputConfirmPassword);
         btnCreateAccount = findViewById(R.id.btnSignUp);
         etUserEmail = findViewById(R.id.etUserEmail);
+        tvPasswordMatch = findViewById(R.id.tvPasswordMatch);
+
         TextView tvHasAccount = findViewById(R.id.tvHasAccount);
 
         tvHasAccount.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (!initialPassword.equals(finalPassword)) {
                     // TODO : Display something to the uer when the two passwords do not match.
+                    tvPasswordMatch.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -78,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 alertDisplayer("Account Created Successfully!", "Please verify your email before login", false);
                             } else {
                                 ParseUser.logOut();
-                                alertDisplayer("Error Account Creation failed", "Account could not be created" + " :" + e.getMessage(), true);
+                                alertDisplayer("Error Account Creation failed", "Account could not be created" + " : " + e.getMessage(), true);
                                 Log.d(TAG, "Unable to create account");
                                 // TODO : Display something to the user so that he or she can create a brand new account.
                             }
@@ -115,7 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void launchSignInPage() {
         Intent i = new Intent(this, SignInActivity.class);
         startActivity(i);
-        //finish();
+        finish();
     }
 
 

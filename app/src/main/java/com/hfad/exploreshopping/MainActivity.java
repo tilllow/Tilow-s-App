@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +15,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+
+import fragments.CartItemsFragment;
+import fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.action_profile:
-                        fragment = new ProfileFragment();
+                        fragment = new FragmentEditProfile();
                         menuItem.setVisible(false);
 
                         break;
