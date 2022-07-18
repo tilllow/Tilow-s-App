@@ -29,6 +29,8 @@ import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 
 public class FragmentEditProfile extends Fragment {
@@ -41,6 +43,9 @@ public class FragmentEditProfile extends Fragment {
     EditText etEmailAddressField;
     ImageButton ibTakePhoto;
     ImageView ivAccountPicture;
+    TextView tvResetPasswordEditProfile;
+    TextView tvLogoutEditProfile;
+    ImageButton ibEditProfile;
     public String photoFilename = "photo.jpg";
     private File photoFile;
 
@@ -65,6 +70,15 @@ public class FragmentEditProfile extends Fragment {
         ibTakePhoto = view.findViewById(R.id.ibTakePhoto);
         ivAccountPicture = view.findViewById(R.id.ivEditAccountPIcture);
 
+        tvResetPasswordEditProfile = view.findViewById(R.id.tvResetPasswordEditProfile);
+        ibEditProfile = view.findViewById(R.id.ibEditProfile);
+        tvLogoutEditProfile = view.findViewById(R.id.tvLogoutEditProfile);
+
+        populateUserInfo("userPersonalName", etNameField);
+        populateUserInfo("userPhoneNumber", etPhoneNumberField);
+        populateUserInfo("userEmailAddress", etEmailAddressField);
+
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         etNameField.setText(currentUser.getString("userPersonalName"));
         etEmailAddressField.setText(currentUser.getString("userEmailAddress"));
@@ -77,29 +91,78 @@ public class FragmentEditProfile extends Fragment {
             ivAccountPicture.setImageResource(R.drawable.ic_baseline_person_24);
         }
 
-        tvDone.setOnClickListener(new View.OnClickListener() {
+        tvLogoutEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String updatedUsername = etNameField.getText().toString();
-                String updatedPhoneNumberField = etPhoneNumberField.getText().toString();
-                String updatedEmailAddress = etEmailAddressField.getText().toString();
+                ParseUser.logOutInBackground();
+                Intent intent = new Intent(getContext(), SignInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
-                currentUser.put("userPersonalName", updatedUsername);
-                currentUser.put("userPhoneNumber", updatedPhoneNumberField);
-                currentUser.put("userEmailAddress", updatedEmailAddress);
+//        tvDone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                String updatedUsername = etNameField.getText().toString();
+//                String updatedPhoneNumberField = etPhoneNumberField.getText().toString();
+//                String updatedEmailAddress = etEmailAddressField.getText().toString();
+//
+//                currentUser.put("userPersonalName", updatedUsername);
+//                currentUser.put("userPhoneNumber", updatedPhoneNumberField);
+//                currentUser.put("userEmailAddress", updatedEmailAddress);
+//
+//                if (photoFile != null) {
+//                    Toast.makeText(getContext(), "No image taken", Toast.LENGTH_SHORT);
+//                    currentUser.put("ProfileImage", new ParseFile(photoFile));
+//                    currentUser.saveInBackground();
+//                }
+//
+//                ProfileFragment fragment = new ProfileFragment();
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, fragment).commit();
+//            }
+//        });
 
-                if (photoFile != null) {
-                    Toast.makeText(getContext(), "No image taken", Toast.LENGTH_SHORT);
-                    currentUser.put("ProfileImage", new ParseFile(photoFile));
+        ibEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean isEnabled = etNameField.isEnabled();
+
+                if (isEnabled){
+                    ibEditProfile.setImageResource(R.drawable.ic_edit);
+                    etNameField.setEnabled(false);
+                    etPhoneNumberField.setEnabled(false);
+                    etEmailAddressField.setEnabled(false);
+
+                    String updatedName = etNameField.getText().toString();
+                    String updatedPhoneNumber = etPhoneNumberField.getText().toString();
+                    String updatedEmail = etEmailAddressField.getText().toString();
+
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    currentUser.put("userPersonalName",updatedName);
+                    currentUser.put("userPhoneNumber",updatedPhoneNumber);
+                    currentUser.put("userEmailAddress",updatedEmail);
                     currentUser.saveInBackground();
+                } else{
+                    ibEditProfile.setImageResource(R.drawable.ic_save_changes);
+                    etNameField.setEnabled(true);
+                    etPhoneNumberField.setEnabled(true);
+                    etEmailAddressField.setEnabled(true);
                 }
 
 
-                ProfileFragment fragment = new ProfileFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.pu;
-//                fragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, fragment).commit();
+            }
+        });
+
+        tvResetPasswordEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ForgotPasswordActivity.class);
+                intent.putExtra("EXTRA_CODE", 1);
+                startActivity(intent);
             }
         });
 
@@ -131,7 +194,7 @@ public class FragmentEditProfile extends Fragment {
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+        if (intent.resolveActivity(getContext().getPackageManager()) != null ) {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
@@ -147,6 +210,9 @@ public class FragmentEditProfile extends Fragment {
                 // Load the taken image into a preview
                 //ImageView ivPreview = (ImageView) findViewById(R.id.ivPost);
                 ivAccountPicture.setImageBitmap(takenImage);
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                currentUser.put("Profile Image",takenImage);
+                currentUser.saveInBackground();
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -160,6 +226,15 @@ public class FragmentEditProfile extends Fragment {
             Log.d(TAG, "failed to create directory");
         }
         return new File(mediaStorageDir.getPath() + File.separator + fileName);
+    }
+
+    private void populateUserInfo(String attribute, EditText view) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        String temp = currentUser.getString(attribute);
+        if (temp != null) {
+            view.setText(temp);
+        }
+
     }
 
 }

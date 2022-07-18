@@ -1,4 +1,4 @@
-package com.hfad.exploreshopping;
+package fragments;
 
 import android.os.Bundle;
 
@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hfad.exploreshopping.CartItemsAdapter;
+import adapters.CartItemsAdapter;
 
 public class CartItemsFragment extends Fragment {
 

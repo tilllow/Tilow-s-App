@@ -1,15 +1,11 @@
-package com.hfad.exploreshopping;
-
-import static com.hfad.exploreshopping.R.color.item_color;
+package fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,14 +21,19 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.hfad.exploreshopping.ActivityQrCodeScanner;
+import com.hfad.exploreshopping.ClickedItem;
+import com.hfad.exploreshopping.PurchaseItem;
+import com.hfad.exploreshopping.R;
+import com.hfad.exploreshopping.Store;
+import com.hfad.exploreshopping.StoreActivity;
+import com.hfad.exploreshopping.SuggestedItem;
+import com.hfad.exploreshopping.ViewedItem;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import adapters.ItemsAdapter;
 import okhttp3.Headers;
 
 public class HomeFragment extends Fragment {
@@ -107,7 +109,7 @@ public class HomeFragment extends Fragment {
         ivScanQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ActivityQrCodeScanner.class);
+                Intent intent = new Intent(getActivity(), ActivityQrCodeScanner.class);
                 startActivity(intent);
             }
         });

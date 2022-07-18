@@ -5,12 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import adapters.StoresAdapter;
 
 
 public class ActivityStoresForProduct extends AppCompatActivity {

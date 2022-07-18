@@ -132,4 +132,15 @@
         app:layout_constraintEnd_toEndOf="@+id/btnSignUp"
         app:layout_constraintStart_toStartOf="@+id/btnSignUp"
         app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
+
+    <TextView
+        android:id="@+id/tvPasswordMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Passwords do not match"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/etInputConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etInputConfirmPassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>
