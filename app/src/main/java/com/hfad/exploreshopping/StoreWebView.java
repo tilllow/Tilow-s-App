@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +30,7 @@ public class StoreWebView extends AppCompatActivity {
         pbStorePageLoading = findViewById(R.id.pbStorePageLoading);
 
         String storePageUrl = getIntent().getStringExtra("EXTRA_STORE_IMAGE_URL");
+        Log.d("StoreWebView","Value of the string url is : " + storePageUrl);
         wvStore.setWebViewClient(new WebViewClient());
         wvStore.loadUrl(storePageUrl);
     }

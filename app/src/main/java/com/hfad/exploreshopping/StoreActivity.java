@@ -31,6 +31,7 @@ import java.util.List;
 import okhttp3.Headers;
 
 public class StoreActivity extends AppCompatActivity {
+
     private List<SuggestedItem> itemList;
     public static final String TAG = "StoreActivity";
     private RecyclerView rvNikeShoes;

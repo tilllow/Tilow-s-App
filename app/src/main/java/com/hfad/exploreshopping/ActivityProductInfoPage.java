@@ -24,7 +24,7 @@ import okhttp3.Headers;
 public class ActivityProductInfoPage extends AppCompatActivity {
 
     public static final String TAG = "ActivityProductInfoPage";
-    List<qrCodeProduct> allProducts;
+    ArrayList<qrCodeProduct> allProducts;
     QrProductsAdapter qrProductsAdapter;
     RecyclerView rvQrProducts;
 
@@ -34,7 +34,7 @@ public class ActivityProductInfoPage extends AppCompatActivity {
         Log.d(TAG, "Inside the ProductInfoPage's onCreate method");
         setContentView(R.layout.activity_product_info_page);
         allProducts = new ArrayList<>();
-        qrProductsAdapter = new QrProductsAdapter(ActivityProductInfoPage.this,allProducts);
+        qrProductsAdapter = new QrProductsAdapter(ActivityProductInfoPage.this, allProducts);
 
         rvQrProducts = findViewById(R.id.rvQrProducts);
         rvQrProducts.setAdapter(qrProductsAdapter);
@@ -46,25 +46,25 @@ public class ActivityProductInfoPage extends AppCompatActivity {
 
     private void queryProducts(String qrCode) {
 
-        Log.d(TAG,"The queryProducts method has been called");
+        Log.d(TAG, "The queryProducts method has been called");
         String apiEndpoint = "https://barcode-lookup.p.rapidapi.com/v3/products";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("barcode",qrCode);
+        params.put("barcode", qrCode);
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key", "f8d5f4eac1msh9b16dcfdf3f9dd2p107bb4jsn348b6dddd340");
+        headers.put("X-RapidAPI-Key", "bef8cb8ff6mshd85f48d12008998p1f5b16jsn6a927615062e");
         headers.put("X-RapidAPI-Host", "barcode-lookup.p.rapidapi.com");
 
         client.get(apiEndpoint, headers, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG,"Item has been queried successfully");
+                Log.d(TAG, "Item has been queried successfully");
                 JSONObject jsonObject = json.jsonObject;
 
-                try{
+                try {
                     JSONArray products = jsonObject.getJSONArray("products");
 
-                    for (int i = 0; i < products.length(); ++i){
+                    for (int i = 0; i < products.length(); ++i) {
 
                         JSONObject possibleProduct = (JSONObject) products.get(i);
                         String productTitle = possibleProduct.getString("title");
@@ -74,23 +74,24 @@ public class ActivityProductInfoPage extends AppCompatActivity {
                         JSONArray stores = possibleProduct.getJSONArray("stores");
                         ArrayList<ProductStore> productStores = new ArrayList<>();
 
-                        for (int j = 0; j < stores.length(); ++j){
-                            JSONObject jsonObject1 = (JSONObject) stores.get(i);
+                        for (int j = 0; j < stores.length(); ++j) {
+                            JSONObject jsonObject1 = (JSONObject) stores.get(j);
                             String storeName = jsonObject1.getString("name");
                             String currencySymbol = jsonObject1.getString("currency_symbol");
                             String itemPrice = jsonObject1.getString("price");
                             String storeUrl = jsonObject1.getString("link");
                             String lastUpdated = jsonObject1.getString("last_update");
 
-                            ProductStore eachStore = new ProductStore(storeName,currencySymbol,itemPrice,storeUrl,lastUpdated);
+                            ProductStore eachStore = new ProductStore(storeName, currencySymbol, itemPrice, storeUrl, lastUpdated);
                             productStores.add(eachStore);
                         }
 
-                        qrCodeProduct foundProduct = new qrCodeProduct(productTitle,productDescription,productImage,productStores);
+                        qrCodeProduct foundProduct = new qrCodeProduct(productTitle, productDescription, productImage, productStores);
                         allProducts.add(foundProduct);
+                        Log.d(TAG, "This is the size of the array after the call to the API has been made : " + allProducts.size());
                         qrProductsAdapter.notifyItemInserted(allProducts.size());
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

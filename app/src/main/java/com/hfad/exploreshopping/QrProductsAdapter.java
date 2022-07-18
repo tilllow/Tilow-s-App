@@ -3,6 +3,7 @@ package com.hfad.exploreshopping;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.ViewHolder>{
+public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.ViewHolder> {
 
+    public static final String TAG = "QrProductsAdapter";
     private Context context;
-    private List<qrCodeProduct> qrCodeProducts;
+    private ArrayList<qrCodeProduct> qrCodeProducts;
 
-    public QrProductsAdapter(Context context, List<qrCodeProduct> qrCodeProducts) {
+    public QrProductsAdapter(Context context, ArrayList<qrCodeProduct> qrCodeProducts) {
 
         this.context = context;
         this.qrCodeProducts = qrCodeProducts;
@@ -46,10 +48,10 @@ public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.Vi
 
     @Override
     public int getItemCount() {
-       return qrCodeProducts.size();
+        return qrCodeProducts.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvQrProductName;
         private TextView tvQrProductDescription;
@@ -64,16 +66,23 @@ public class QrProductsAdapter extends RecyclerView.Adapter<QrProductsAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = getAbsoluteAdapterPosition();
-                    Intent intent = new Intent(context,ActivityStoresForProduct.class);
+                    int pos = getAdapterPosition();
+                    Log.d(TAG, "This is the length of the position returned from the getAbsoluteAdapterPosition method : " + pos);
+                    Intent intent = new Intent(context, ActivityStoresForProduct.class);
                     qrCodeProduct temp = qrCodeProducts.get(pos);
-                    intent.putExtra("EXTRA_QR_CODE_PRODUCT", (temp));
+                    intent.putExtra("productTitle", temp.getProductTitle());
+                    intent.putExtra("productDescription", temp.getProductDescription());
+                    intent.putExtra("productImageUrl", temp.getProductImageUrl());
+                    intent.putParcelableArrayListExtra("productStores", temp.getProductStores());
+                    Log.d(TAG, "This is the value of the productStores being passed along" + temp.getProductStores());
+                    Log.d(TAG, "The length of the arraylist here is given by : " + temp.getProductStores().size());
+                    Log.d(TAG, "The length of the arraylist here is given by : " + temp.getProductStores().size());
                     context.startActivity(intent);
                 }
             });
         }
 
-        public void bind(qrCodeProduct product){
+        public void bind(qrCodeProduct product) {
 
             tvQrProductName.setText(product.getProductTitle());
             tvQrProductDescription.setText(product.getProductDescription());

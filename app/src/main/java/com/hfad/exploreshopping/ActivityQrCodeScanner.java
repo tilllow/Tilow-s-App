@@ -21,15 +21,15 @@ public class ActivityQrCodeScanner extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         // Check condition
-        if (intentResult.getContents() != null){
+        if (intentResult.getContents() != null) {
             String qrCode = intentResult.getContents();
-            Intent intent  = new Intent(ActivityQrCodeScanner.this,ActivityProductInfoPage.class);
-            intent.putExtra("QR_CODE",qrCode);
+            Intent intent = new Intent(ActivityQrCodeScanner.this, ActivityProductInfoPage.class);
+            intent.putExtra("QR_CODE", qrCode);
             startActivity(intent);
-        } else{
-            Toast.makeText(ActivityQrCodeScanner.this,"OOPS...You did not scan anything",Toast.LENGTH_SHORT);
+        } else {
+            Toast.makeText(ActivityQrCodeScanner.this, "OOPS...You did not scan anything", Toast.LENGTH_SHORT);
         }
     }
 

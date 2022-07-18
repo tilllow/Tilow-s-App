@@ -2,6 +2,7 @@ package com.hfad.exploreshopping;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,9 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder>{
+public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder> {
 
+    public static final String TAG = "StoresAdapter";
     private Context context;
     private List<ProductStore> productStoreList;
     private qrCodeProduct qrCodeProduct;
@@ -49,7 +51,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         return productStoreList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvQrStoreName;
         private TextView tvQrProductName;
@@ -70,7 +72,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
         }
 
-        public void bind(ProductStore productStore){
+        public void bind(ProductStore productStore) {
 
             tvQrStoreName.setText(productStore.getStoreName());
             tvQrProductName.setText(qrCodeProduct.getProductTitle());
@@ -81,8 +83,9 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
             tvStoreDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context,StoreWebView.class);
-                    intent.putExtra("EXTRA_STORE_IMAGE_URL",productStore.getStoreUrl());
+                    Intent intent = new Intent(context, StoreWebView.class);
+                    intent.putExtra("EXTRA_STORE_IMAGE_URL", productStore.getStoreUrl());
+                    Log.d(TAG, "This is the url for the store : " + productStore.getStoreUrl());
                     context.startActivity(intent);
                 }
             });
