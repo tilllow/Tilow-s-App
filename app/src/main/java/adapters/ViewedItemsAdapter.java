@@ -7,58 +7,60 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hfad.exploreshopping.ClickedItem;
 import com.hfad.exploreshopping.ProductDetailActivity;
 import com.hfad.exploreshopping.R;
 import com.hfad.exploreshopping.SuggestedItem;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-    private Context context;
-    private List<SuggestedItem> itemsList;
+public class ViewedItemsAdapter extends RecyclerView.Adapter<ViewedItemsAdapter.ViewHolder>{
 
-    public ItemsAdapter(Context context, List<SuggestedItem> itemsList) {
+    private Context context;
+    private List<ClickedItem> clickedItemList;
+
+    public ViewedItemsAdapter(Context context, List<ClickedItem> viewedItemList) {
         this.context = context;
-        this.itemsList = itemsList;
+        this.clickedItemList = viewedItemList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_individual_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewed_items_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public int getItemCount() {
-        Toast.makeText(context, "The item count is : " + itemsList.size(), Toast.LENGTH_SHORT);
-        return itemsList.size();
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ClickedItem clickedItem = clickedItemList.get(position);
+        holder.bind(clickedItem);
     }
 
+
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SuggestedItem item = itemsList.get(position);
-        holder.bind(item);
+    public int getItemCount() {
+        return clickedItemList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvProductName;
+        private TextView tvViewedItemProductName;
         private TextView tvProductPrice;
         private ImageView ivProductImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvProductName = itemView.findViewById(R.id.tvClickedItemProductName);
+            tvViewedItemProductName = itemView.findViewById(R.id.tvClickedItemProductName);
             tvProductPrice = itemView.findViewById(R.id.tvClickedItemProductPrice);
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
 
@@ -66,34 +68,21 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
-                    SuggestedItem suggestedItem = itemsList.get(pos);
+                    ClickedItem clickedItem = clickedItemList.get(pos);
+                    SuggestedItem suggestedItem = new SuggestedItem(clickedItem);
                     Intent i = new Intent(context, ProductDetailActivity.class);
                     i.putExtra("EXTRA_ITEM", Parcels.wrap(suggestedItem));
                     context.startActivity(i);
                 }
             });
+
         }
 
-        public void bind(SuggestedItem item) {
-            tvProductName.setText(item.getProductName());
-            tvProductPrice.setText(item.getProductPrice());
+        public void bind(ClickedItem clickedItem) {
 
-            Glide.with(context).load(item.getProductImageUrl()).into(ivProductImage);
+            tvViewedItemProductName.setText(clickedItem.getProductName());
+            tvProductPrice.setText(clickedItem.getProductPrice());
+            Glide.with(context).load(clickedItem.getProductImageUrl()).into(ivProductImage);
         }
-    }
-
-    public void clear() {
-        itemsList.clear();
-    }
-
-    public void AddAll(ArrayList<SuggestedItem> suggestedItems) {
-        itemsList.addAll(suggestedItems);
-        notifyDataSetChanged();
-        //Toast.makeText(context, "Adapter has been notified successfully", Toast.LENGTH_SHORT).show();
-    }
-
-    public void setFilteredList(List<SuggestedItem> filteredList) {
-        this.itemsList = filteredList;
-        notifyDataSetChanged();
     }
 }

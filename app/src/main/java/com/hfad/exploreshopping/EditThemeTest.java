@@ -53,25 +53,34 @@ public class EditThemeTest extends AppCompatActivity {
         switchChangeTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    switchChangeTheme.setChecked(true);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode",true);
-                    editor.commit();
-                    reset();
-                    //tvThemeChange.setText("Dark mode");
-                    Toast.makeText(EditThemeTest.this,"Light mode is off",Toast.LENGTH_SHORT).show();
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    switchChangeTheme.setChecked(false);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("night_mode",false);
-                    editor.commit();
-                    reset();
-                    Toast.makeText(EditThemeTest.this,"Dark mode is off",Toast.LENGTH_SHORT).show();
 
-                }
+                AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+                switchChangeTheme.setChecked(isChecked);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("night_mode", isChecked);
+                editor.commit();
+                reset();
+
+                //Toast.makeText(EditThemeTest.this, isChecked ? ":Light mode is on" : ":Light mode is off", Toast.LENGTH_SHORT).show();
+//                if (isChecked) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                    switchChangeTheme.setChecked(true);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putBoolean("night_mode",true);
+//                    editor.commit();
+//                    reset();
+//                    //tvThemeChange.setText("Dark mode");
+//                    Toast.makeText(EditThemeTest.this,"Light mode is off",Toast.LENGTH_SHORT).show();
+//                } else {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    switchChangeTheme.setChecked(false);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putBoolean("night_mode",false);
+//                    editor.commit();
+//                    reset();
+//                    Toast.makeText(EditThemeTest.this,"Dark mode is off",Toast.LENGTH_SHORT).show();
+//
+//                }
             }
         });
     }

@@ -8,9 +8,11 @@ import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 
 @Parcel
-public class SuggestedItem {
+public class SuggestedItem implements Comparable<SuggestedItem>{
 
     private String productName;
     private String productImageUrl;
@@ -18,6 +20,8 @@ public class SuggestedItem {
     private String productDetailUrl;
     private String productOriginalPrice = "null";
     private String productRatings = "No ratings available";
+    private double productPriceValue = 0;
+    private int correlation = 0;
 
     public SuggestedItem() {
     }
@@ -72,5 +76,22 @@ public class SuggestedItem {
 
     String processRatings(String ratings) {
         return null;
+    }
+
+    public void setProductPriceValue(double productPriceValue){
+        this.productPriceValue = productPriceValue;
+    }
+
+    public int getCorrelation() {
+        return correlation;
+    }
+
+    @Override
+    public int compareTo(SuggestedItem o) {
+        return this.getCorrelation() - o.getCorrelation();
+    }
+
+    public void setCorrelation(int correlation) {
+        this.correlation = correlation;
     }
 }

@@ -181,12 +181,12 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                boolean emailVerified = currentUser.getBoolean("emailVerified");
-                if (Boolean.compare(emailVerified, true) == 0) {
-                    displayAlertMessage("Login", "Verify your email address before you proceed");
-                    Toast.makeText(SignInActivity.this, "Please verify your email address before proceeding.", Toast.LENGTH_SHORT);
-                    return;
-                }
+//                boolean emailVerified = currentUser.getBoolean("emailVerified");
+//                if (!(Boolean.compare(emailVerified, true) == 0)) {
+//                    displayAlertMessage("Login", "Verify your email address before you proceed");
+//                    Toast.makeText(SignInActivity.this, "Please verify your email address before proceeding.", Toast.LENGTH_SHORT);
+//                    return;
+//                }
 
                 launchMainActivity();
             }

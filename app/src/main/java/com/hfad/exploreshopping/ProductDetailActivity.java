@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 
 public class ProductDetailActivity extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     AppCompatButton btnPurchaseItem;
     AppCompatButton btnAddToCart;
     SuggestedItem suggestedItem;
+    Date startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnPurchaseItem = findViewById(R.id.btnPurchaseItem);
         tvProductOldPriceText = findViewById(R.id.tvProductOldPriceText);
         tvProductRatingsText = findViewById(R.id.tvProductRatingsText);
+        startTime = Calendar.getInstance().getTime();
 
         suggestedItem = Parcels.unwrap(getIntent().getParcelableExtra("EXTRA_ITEM"));
 
@@ -162,6 +168,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
         HashSet<String> imageUrlSet = new HashSet<>();
+        Log.d(TAG,"This is the length of the json array returned from the database" + itemsClicked.length());
 
         if (itemsClicked == null) {
             clickedItem.saveInBackground(new SaveCallback() {
@@ -180,29 +187,49 @@ public class ProductDetailActivity extends AppCompatActivity {
             return;
         }
 
+
+        final Boolean[] breakOut = {false};
         for (int i = 0; i < itemsClicked.length(); ++i) {
+            if (breakOut.equals(true)){
+                break;
+            }
             try {
                 JSONObject itemAlreadyClicked = (JSONObject) itemsClicked.get(i);
                 String itemId = (String) itemAlreadyClicked.get("objectId");
 
                 ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
                 int finalI = i;
+                String clickedItemImageUrl = suggestedItem.getProductImageUrl();
                 query.getInBackground(itemId, new GetCallback<ClickedItem>() {
                     @Override
                     public void done(ClickedItem object, ParseException e) {
                         if (e == null) {
                             String imageUrl = object.getProductImageUrl();
                             imageUrlSet.add(imageUrl);
+                            if (imageUrlSet.contains(clickedItemImageUrl)) {
+                                Date endTime = Calendar.getInstance().getTime();
+                                Long timeDiff = endTime.getTime() - startTime.getTime();
+                                Long number = clickedItem.getTimeSpent();
+                                if (number == null){
+                                    number = 0L;
+                                }
+                                Log.d(TAG,"This is the value of the clicked item : " + clickedItem);
+                                Log.d(TAG,"This is the time spent on this item : " + number);
+                                clickedItem.put("timeSpent", number + timeDiff);
+                                breakOut[0] = true;
+                            }
 
                             final int val = finalI;
 
-                            if (val == itemsClicked.length() - 1) {
-                                if (!imageUrlSet.contains(clickedItem.getProductImageUrl())) {
-                                    Log.d(TAG, "This is a case of an brand new product");
+                            if (val == itemsClicked.length() - 1 && breakOut[0] == false) {
+                                Date endTime = Calendar.getInstance().getTime();
+                                Long timeDiff = endTime.getTime() - startTime.getTime();
+
                                     clickedItem.saveInBackground(new SaveCallback() {
                                         @Override
                                         public void done(ParseException e) {
                                             if (e == null) {
+                                                clickedItem.setProductTimeSpent(timeDiff);
                                                 ParseUser currentUser = ParseUser.getCurrentUser();
                                                 currentUser.addUnique("clickedItems", clickedItem);
                                                 currentUser.saveInBackground();
@@ -212,10 +239,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-                                } else {
-                                    Log.d(TAG, "This is the case of an already viewed item from the user");
 
-                                }
                             }
 
                         } else {

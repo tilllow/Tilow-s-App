@@ -1,13 +1,15 @@
 package com.hfad.exploreshopping;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @ParseClassName("clickedItem")
-public class ClickedItem extends ParseObject {
+public class ClickedItem extends ParseObject implements  Comparable<ClickedItem>{
 
     public static final String TAG = "ClickedItem";
     public static final String KEY_PRODUCT_NAME = "productName";
@@ -17,6 +19,7 @@ public class ClickedItem extends ParseObject {
     public static final String KEY_PRODUCT_ORIGINAL_PRICE = "productOriginalPrice";
     public static final String KEY_PRODUCT_RATINGS = "productRatings";
     public static final String KEY_PRODUCT_CREATED_AT = "createdAt";
+    public static final String KEY_PRODUCT_TIME_SPENT = "timeSpent";
 
 
     public ClickedItem() {
@@ -70,6 +73,10 @@ public class ClickedItem extends ParseObject {
         return getString(KEY_IMAGE_URL);
     }
 
+    public Date getProductCreationDate(){
+        return getCreatedAt();
+    }
+
     ;
 
     public void setProductName(String name) {
@@ -85,6 +92,10 @@ public class ClickedItem extends ParseObject {
             return;
         }
         put(KEY_PRODUCT_ORIGINAL_PRICE, price);
+    }
+
+    public void setProductTimeSpent(Long timeSpent){
+        put(KEY_PRODUCT_TIME_SPENT,timeSpent);
     }
 
     public void setProductRatings(String ratings) {
@@ -110,5 +121,24 @@ public class ClickedItem extends ParseObject {
 
     public void setProductImageUrl(String imageUrl) {
         put(KEY_IMAGE_URL, imageUrl);
+    }
+
+    public Long getTimeSpent() {
+        Integer ans = (Integer) getNumber("timeSpent");
+        if (ans == null){
+            ans = 0;
+        }
+        return ans.longValue();
+    }
+
+    @Override
+    public int compareTo(ClickedItem o) {
+        Log.d(TAG,"This compareTo method is being called");
+        Date currentTime = Calendar.getInstance().getTime();
+        Date createdAtTime = o.getCreatedAt();
+        long duration1 = currentTime.getTime() - createdAtTime.getTime();
+        long duration2 = currentTime.getTime() - this.getCreatedAt().getTime();
+
+        return (int) ((int) (o.getTimeSpent() - this.getTimeSpent()) + (duration2 - duration1) % 86400);
     }
 }

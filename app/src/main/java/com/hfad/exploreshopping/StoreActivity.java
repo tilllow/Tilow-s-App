@@ -20,13 +20,20 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.zxing.common.StringUtils;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import adapters.ItemsAdapter;
 import okhttp3.Headers;
@@ -51,12 +58,15 @@ public class StoreActivity extends AppCompatActivity {
     private int lowerPrice = 0;
     private int upperPrice = 0;
     private int position;
+    private JSONArray searchWordsArray = new JSONArray();
+    private HashSet<String> searchWordSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+        convertToHashSet();
         position = getIntent().getIntExtra("EXTRA_POSITION", 0);
 
         itemList = new ArrayList<>();
@@ -74,6 +84,9 @@ public class StoreActivity extends AppCompatActivity {
         tvLowerPrice.setText("Low : 0");
         tvHigherPrice.setText("High : ...");
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        searchWordsArray = currentUser.getJSONArray("searchWords");
+
         switch (position) {
             case 0:
                 svSearchStore.setQueryHint("Search Nike Shoes here...");
@@ -81,6 +94,9 @@ public class StoreActivity extends AppCompatActivity {
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.addUnique("searchWords",query.toLowerCase().trim());
+                        currentUser.saveInBackground();
                         return false;
                     }
 
@@ -98,6 +114,9 @@ public class StoreActivity extends AppCompatActivity {
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.add("searchWords", query.toLowerCase().trim());
+                        currentUser.saveInBackground();
                         return false;
                     }
 
@@ -117,6 +136,9 @@ public class StoreActivity extends AppCompatActivity {
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.addUnique("searchWords",query.toLowerCase().trim());
+                        currentUser.saveInBackground();
                         requestAmazonProducts(query);
                         return false;
                     }
@@ -135,6 +157,9 @@ public class StoreActivity extends AppCompatActivity {
                 svSearchStore.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.addUnique("searchWords",query.toLowerCase().trim());
+                        currentUser.saveInBackground();
                         return false;
                     }
 
@@ -175,7 +200,7 @@ public class StoreActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
+        headers.put("X-RapidAPI-Key", "bef8cb8ff6mshd85f48d12008998p1f5b16jsn6a927615062e");
         headers.put("X-RapidAPI-Host", "nike-products.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
@@ -187,6 +212,7 @@ public class StoreActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.d(TAG, "OnSuccess");
                 JSONArray jsonArray = json.jsonArray;
+                Log.d(TAG,"The length of the json Array is : " + jsonArray.length());
                 try {
                     allItems.clear();
                     List<SuggestedItem> items = new ArrayList<>();
@@ -196,15 +222,20 @@ public class StoreActivity extends AppCompatActivity {
                         String productDetailUrl = jsonObject.getString("url");
                         String shoeName = jsonObject.getString("title");
                         String shoePrice = jsonObject.getString("price");
+                        Log.d(TAG,"This is the shoe price");
+
+                        //Double productPriceValue = Double.parseDouble(shoePrice.substring(1));
 
                         SuggestedItem shoeItem = new SuggestedItem(shoeName, shoeImageUrl, shoePrice, productDetailUrl, null, null);
+                        //shoeItem.setProductPriceValue(productPriceValue);
                         allItems.add(shoeItem);
                         if (filterBasedOnPrice(shoeItem, lowerPrice, upperPrice)) {
                             items.add(shoeItem);
                         }
 
                     }
-
+                    Log.d(TAG,"Outside the for loop in the Nike Store");
+                    Collections.sort(items);
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
@@ -256,13 +287,17 @@ public class StoreActivity extends AppCompatActivity {
                         JSONObject currentPriceObject = priceObject.getJSONObject("current");
                         JSONObject oldPriceObject = priceObject.getJSONObject("previous");
                         String currentPrice = currentPriceObject.getString("text");
+                        Double productPriceValue = currentPriceObject.getDouble("value");
                         String originalPrice = oldPriceObject.getString("text");
 
                         SuggestedItem productItem = new SuggestedItem(name, productImageUrl, currentPrice, productDetailUrl, originalPrice, null);
+                        productItem.setCorrelation(getCorrelation(name));
+                        productItem.setProductPriceValue(productPriceValue);
                         allItems.add(productItem);
                         items.add(productItem);
                     }
 
+                    Collections.sort(items);
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
@@ -321,6 +356,8 @@ public class StoreActivity extends AppCompatActivity {
                         SuggestedItem suggestedItem = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, null);
                         items.add(suggestedItem);
                     }
+
+                    Collections.sort(items);
                     itemList.addAll(items);
                     Log.d(TAG, "This is the size of the array returned from the API" + items.size());
                     adapter.notifyDataSetChanged();
@@ -373,6 +410,7 @@ public class StoreActivity extends AppCompatActivity {
                         items.add(item);
                     }
 
+                    Collections.sort(items);
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
@@ -419,6 +457,8 @@ public class StoreActivity extends AppCompatActivity {
                         String productImageUrl = product.getString("image");
                         String productDetailUrl = product.getString("url");
                         String productPrice = product.getString("price_string");
+                        String temp = productPrice.replace(",","");
+                        Double productPriceValue = Double.parseDouble(temp);
                         String productRatings = null;
 
                         try {
@@ -429,6 +469,7 @@ public class StoreActivity extends AppCompatActivity {
 
 
                         SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, productRatings);
+                        item.setProductPriceValue(productPriceValue);
                         allItems.add(item);
 
                         if (filterBasedOnPrice(item, lowerPrice, upperPrice)) {
@@ -439,6 +480,8 @@ public class StoreActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    Collections.sort(items);
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
@@ -548,4 +591,66 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void convertToHashSet() {
+
+        for (int i = 0; i < searchWordsArray.length();++i){
+            try {
+                String word = (String) searchWordsArray.get(i);
+                searchWordSet.add(word);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    private int getCorrelation(String searchWord){
+        int correlation = 0;
+        String lowerCaseSearchWord = searchWord.toLowerCase();
+        String str[] = lowerCaseSearchWord.split(" ");
+        List<String> al = new ArrayList<String>();
+        al = Arrays.asList(str);
+        for (int i = 0; i < al.size(); ++i){
+            String word = al.get(i);
+            if (searchWordSet.contains(word)){
+                ++correlation;
+            }
+        }
+        return correlation;
+    }
+
+    private int getAmazonCorrelation(SuggestedItem suggestedItem){
+
+        int correlation = 0;
+        correlation += getCorrelation(suggestedItem.getProductName());
+        correlation += processAmazonRatings(suggestedItem.getProductRatings());
+        return correlation;
+    }
+
+    private int getAsosCorrelation(SuggestedItem suggestedItem){
+        return 0;
+    }
+
+    private int getNikeCorrelation(SuggestedItem suggestedItem){
+        return 0;
+    }
+
+    private int getShoesStoreCorrelation(SuggestedItem suggestedItem){
+        return 0;
+    }
+
+    private double processAmazonRatings(String amazonRating){
+        double ans = 0;
+        String str[] = amazonRating.split(" ");
+        List<String> al = new ArrayList<String>();
+        try{
+            ans = Double.parseDouble(al.get(0));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return ans;
+    }
+
 }
