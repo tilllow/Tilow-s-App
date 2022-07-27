@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,7 +37,7 @@ import java.io.File;
 public class FragmentEditProfile extends Fragment {
 
     public static final String TAG = "FragmentEditProfile";
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     TextView tvDone;
     EditText etNameField;
     EditText etPhoneNumberField;
@@ -103,28 +104,6 @@ public class FragmentEditProfile extends Fragment {
             }
         });
 
-//        tvDone.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String updatedUsername = etNameField.getText().toString();
-//                String updatedPhoneNumberField = etPhoneNumberField.getText().toString();
-//                String updatedEmailAddress = etEmailAddressField.getText().toString();
-//
-//                currentUser.put("userPersonalName", updatedUsername);
-//                currentUser.put("userPhoneNumber", updatedPhoneNumberField);
-//                currentUser.put("userEmailAddress", updatedEmailAddress);
-//
-//                if (photoFile != null) {
-//                    Toast.makeText(getContext(), "No image taken", Toast.LENGTH_SHORT);
-//                    currentUser.put("ProfileImage", new ParseFile(photoFile));
-//                    currentUser.saveInBackground();
-//                }
-//
-//                ProfileFragment fragment = new ProfileFragment();
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.flContainer, fragment).commit();
-//            }
-//        });
 
         ibEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +173,7 @@ public class FragmentEditProfile extends Fragment {
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent
-        if (intent.resolveActivity(getContext().getPackageManager()) != null ) {
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
@@ -206,12 +185,17 @@ public class FragmentEditProfile extends Fragment {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Matrix matrix = new Matrix();
+                matrix.setRotate(90);
+                takenImage = Bitmap.createBitmap(takenImage, 0, 0, takenImage.getWidth(), takenImage.getHeight(), matrix, true);
+                Log.d(TAG,"This is the taken image : " + takenImage);
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
                 //ImageView ivPreview = (ImageView) findViewById(R.id.ivPost);
+
                 ivAccountPicture.setImageBitmap(takenImage);
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                currentUser.put("Profile Image",takenImage);
+                currentUser.put("ProfileImage",new ParseFile(photoFile));
                 currentUser.saveInBackground();
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();

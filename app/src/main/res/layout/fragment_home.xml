@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.HomeFragment"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_layout"
@@ -16,8 +17,11 @@
             android:id="@+id/ivScanQrCode"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/qrcode_background"
+            android:elevation="3dp"
             android:padding="2dp"
-            android:src="@drawable/ic_code_scanner"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_1"
             app:layout_constraintBottom_toBottomOf="@+id/svSearchProduct"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/svSearchProduct"
@@ -41,8 +45,8 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/svSearchProduct"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/searchview_background"
+            android:layout_height="35dp"
+            android:background="@drawable/qrcode_background"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@id/const_layout"
@@ -91,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85" />
+            app:layout_constraintGuide_percent="0.8515815" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

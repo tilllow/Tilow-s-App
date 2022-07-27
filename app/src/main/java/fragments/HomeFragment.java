@@ -1,5 +1,7 @@
 package fragments;
 
+import static java.util.Collections.sort;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -33,7 +35,6 @@ import com.hfad.exploreshopping.R;
 import com.hfad.exploreshopping.Store;
 import com.hfad.exploreshopping.StoreActivity;
 import com.hfad.exploreshopping.SuggestedItem;
-import com.hfad.exploreshopping.ViewedItem;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -44,18 +45,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 import adapters.ItemsAdapter;
+import adapters.ViewedItemsAdapter;
 import okhttp3.Headers;
 
 public class HomeFragment extends Fragment {
 
     public static final String TAG = "HomeFragment";
     private List<SuggestedItem> itemList;
-    private List<ViewedItem> recentlyViewed;
-    private ItemsAdapter adapter;
+    private List<ClickedItem> recentlyViewed;
+    private ViewedItemsAdapter adapter;
     private RecyclerView rvFragmentItems;
     private SearchView svSearchProduct;
     private ImageView ivScanQrCode;
@@ -76,6 +83,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG,"This is also a random log");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -97,7 +105,6 @@ public class HomeFragment extends Fragment {
 
         customAdapter = new CustomAdapter(storeList, getContext());
         gvStores.setAdapter(customAdapter);
-        //gvStores.setBackgroundColor(getResources().getColor(R.color.item_color));
 
         gvStores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,9 +139,10 @@ public class HomeFragment extends Fragment {
         });
 
         itemList = new ArrayList<>();
-        adapter = new ItemsAdapter(getContext(), itemList);
+        recentlyViewed = new ArrayList<>();
+        adapter = new ViewedItemsAdapter(getContext(), recentlyViewed);
         rvFragmentItems.setAdapter(adapter);
-        rvFragmentItems.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        rvFragmentItems.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         populateViewedItems();
     }
 
@@ -276,25 +284,54 @@ public class HomeFragment extends Fragment {
                 // TODO: Decide how to handle this exception later
             }
         }
+
+        adapter.notifyDataSetChanged();
+
     }
 
     private void queryViewedItem(String itemId) {
 
         ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
         query.setLimit(10);
-        query.addDescendingOrder("createdAt");
+//        query.findInBackground()
         query.getInBackground(itemId, new GetCallback<ClickedItem>() {
             @Override
             public void done(ClickedItem object, ParseException e) {
                 if (e == null) {
-                    SuggestedItem suggestedItem = new SuggestedItem(object);
-                    itemList.add(suggestedItem);
-                    if (itemList.size() > 0) {
+                    long DAY_IN_MS = 1000 * 60 * 60 * 24;
+                    Date weekAgoDate = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+//                    Log.d(TAG,weekAgoDate.toString());
+//                    Log.d(TAG,object.getProductCreationDate().toString());
+                    Date objectDate = object.getProductCreationDate();
+
+                    if (objectDate.compareTo(weekAgoDate) < 0){
+                        return;
+                    }
+
+                    recentlyViewed.add(object);
+                    Collections.sort(recentlyViewed, new Comparator<ClickedItem>() {
+                        @Override
+                        public int compare(ClickedItem o1, ClickedItem o2) {
+
+                            Log.d(TAG,"This is the value of the recently ViewedItems from the database : " + recentlyViewed.size());
+                            Date currentTime = Calendar.getInstance().getTime();
+                            Date createdAtTime1 = o1.getCreatedAt();
+                            Date createdAtTime2= o2.getCreatedAt();
+                            Long duration1 = currentTime.getTime() - createdAtTime1.getTime();
+                            Long duration2 = currentTime.getTime() - createdAtTime2.getTime();
+                            int val = (int) ((int) (o2.getTimeSpent() - o1.getTimeSpent()) + (duration1 - duration2) % 86400);
+                            Log.d(TAG,"This is the value of the comparison factor : " + val);
+                            return (int) ((int) (o2.getTimeSpent() - o1.getTimeSpent()) + (duration1 - duration2) % 86400);
+                        }
+                    });
+//                    SuggestedItem suggestedItem = new SuggestedItem(object);
+//
+//                    itemList.add(suggestedItem);
+                    if (recentlyViewed.size() > 0) {
                         tvRecentlyViewed.setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();
                 } else {
-                    Log.d(TAG, "There was an error with fetching this data");
+                    Log.i(TAG,"This is the error message obtained when trying to fetch the data from the database", e);
                 }
             }
         });

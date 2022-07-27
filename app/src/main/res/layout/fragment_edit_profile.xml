@@ -31,6 +31,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/item_color"
                     android:orientation="horizontal">
 
                     <TextView
@@ -68,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:background="@color/item_color"
                     android:orientation="horizontal">
 
                     <TextView
@@ -105,6 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:background="@color/item_color"
                     android:orientation="horizontal">
 
                     <TextView
@@ -194,6 +197,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="@color/item_color"
+            app:cardBackgroundColor="@color/item_color"
             app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@+id/textView6">
 
@@ -222,7 +227,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="@color/item_color"
             android:paddingLeft="5dp"
+            app:cardBackgroundColor="@color/item_color"
             app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@+id/textView10">
 
@@ -243,7 +250,7 @@
             android:id="@+id/ibEditProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/background_color_light"
+            android:backgroundTint="@color/item_color"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="@+id/tvInformationTitle"
             app:layout_constraintEnd_toEndOf="parent"
