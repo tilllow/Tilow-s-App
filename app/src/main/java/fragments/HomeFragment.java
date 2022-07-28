@@ -29,6 +29,7 @@ import com.codepath.asynchttpclient.RequestHeaders;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.hfad.exploreshopping.ActivityQrCodeScanner;
+import com.hfad.exploreshopping.Cache;
 import com.hfad.exploreshopping.ClickedItem;
 import com.hfad.exploreshopping.PurchaseItem;
 import com.hfad.exploreshopping.R;
@@ -264,10 +265,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateViewedItems() {
+
         ParseUser currentUser = ParseUser.getCurrentUser();
-        List<PurchaseItem> temp;
-        JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
+        String userId = currentUser.getObjectId();
+        List<ClickedItem> temp;
+
         temp = new ArrayList<>();
+        temp = Cache.getUserItemsViewed(userId);
+        Log.d(TAG,"This is the value returned after querying from the caching system : "+ temp);
+        if (temp != null){
+            Cache.updateUserToIdMap(userId);
+            recentlyViewed.addAll(temp);
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        JSONArray itemsClicked = currentUser.getJSONArray("clickedItems");
 
         if (itemsClicked == null) {
             return;
@@ -283,6 +296,14 @@ public class HomeFragment extends Fragment {
             } catch (Exception e) {
                 // TODO: Decide how to handle this exception later
             }
+
+            if (i == itemsClicked.length() - 1){
+                Log.d(TAG,"This is the length of the array list : " + itemsClicked.length());
+                if (recentlyViewed.size() > 0){
+                    Cache.updateViewedItemsMap(userId,recentlyViewed);
+                }
+                Cache.updateUserToIdMap(userId);
+            }
         }
 
         adapter.notifyDataSetChanged();
@@ -293,15 +314,13 @@ public class HomeFragment extends Fragment {
 
         ParseQuery<ClickedItem> query = ParseQuery.getQuery(ClickedItem.class);
         query.setLimit(10);
-//        query.findInBackground()
         query.getInBackground(itemId, new GetCallback<ClickedItem>() {
             @Override
             public void done(ClickedItem object, ParseException e) {
                 if (e == null) {
+
                     long DAY_IN_MS = 1000 * 60 * 60 * 24;
                     Date weekAgoDate = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
-//                    Log.d(TAG,weekAgoDate.toString());
-//                    Log.d(TAG,object.getProductCreationDate().toString());
                     Date objectDate = object.getProductCreationDate();
 
                     if (objectDate.compareTo(weekAgoDate) < 0){
@@ -313,20 +332,16 @@ public class HomeFragment extends Fragment {
                         @Override
                         public int compare(ClickedItem o1, ClickedItem o2) {
 
-                            Log.d(TAG,"This is the value of the recently ViewedItems from the database : " + recentlyViewed.size());
+                            // Sort the viewed items by the user based on the time the user spent on the item and when last the user accessed the item.
                             Date currentTime = Calendar.getInstance().getTime();
                             Date createdAtTime1 = o1.getCreatedAt();
                             Date createdAtTime2= o2.getCreatedAt();
                             Long duration1 = currentTime.getTime() - createdAtTime1.getTime();
                             Long duration2 = currentTime.getTime() - createdAtTime2.getTime();
                             int val = (int) ((int) (o2.getTimeSpent() - o1.getTimeSpent()) + (duration1 - duration2) % 86400);
-                            Log.d(TAG,"This is the value of the comparison factor : " + val);
                             return (int) ((int) (o2.getTimeSpent() - o1.getTimeSpent()) + (duration1 - duration2) % 86400);
                         }
                     });
-//                    SuggestedItem suggestedItem = new SuggestedItem(object);
-//
-//                    itemList.add(suggestedItem);
                     if (recentlyViewed.size() > 0) {
                         tvRecentlyViewed.setVisibility(View.VISIBLE);
                     }

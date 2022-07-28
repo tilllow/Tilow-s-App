@@ -34,6 +34,7 @@
         <entry key="app/src/main/res/layout/activity_qr_code_scanner.xml" value="0.5760416666666667" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.4008152173913043" />
         <entry key="app/src/main/res/layout/activity_store.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_store_web_view.xml" value="0.34397163120567376" />
         <entry key="app/src/main/res/layout/activity_stores_for_product.xml" value="0.5760416666666667" />
