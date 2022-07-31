@@ -338,7 +338,7 @@ public class StoreActivity extends AppCompatActivity {
                     List<SuggestedItem> items = new ArrayList<>();
                     allItems.clear();
 
-                    for (int i = 0; i < docs.length(); ++i) {
+                    for (int i = 0; i < Math.min(docs.length(),30); ++i) {
 
                         JSONObject productInfo = docs.getJSONObject(i);
                         String productName = productInfo.getString("deal_title");
@@ -372,7 +372,7 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 pbStoreItemLoading.setVisibility(View.INVISIBLE);
-                Toast.makeText(StoreActivity.this, "Your request could not be completed. Please try again", Toast.LENGTH_SHORT);
+                //Toast.makeText(StoreActivity.this, "Your request could not be completed. Please try again", Toast.LENGTH_SHORT);
                 Log.e(TAG, "OnFailure", throwable);
                 //progressBar.setVisibility(View.GONE);
             }
@@ -432,12 +432,12 @@ public class StoreActivity extends AppCompatActivity {
 
     private void requestAmazonProducts(String searchWord) {
 
-        String amazonApiEndpoint = "https://amazon60.p.rapidapi.com/search/" + searchWord + "?api_key=e4037415b3d58b93e689d4ed83405ffb";
+        String amazonApiEndpoint = "https://amazon24.p.rapidapi.com/api/product?categoryID=aps&keyword=" + searchWord + "&country=US&page=1";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams requestParams = new RequestParams();
         RequestHeaders requestHeaders = new RequestHeaders();
-        requestHeaders.put("X-RapidAPI-Key", "11823e50fcmsh8e85454fc85d650p1424d9jsn73755fa48c6a");
-        requestHeaders.put("X-RapidAPI-Host", "amazon60.p.rapidapi.com");
+        requestHeaders.put("X-RapidAPI-Key", "f8d5f4eac1msh9b16dcfdf3f9dd2p107bb4jsn348b6dddd340");
+        requestHeaders.put("X-RapidAPI-Host", "amazon24.p.rapidapi.com");
         itemList.clear();
         pbStoreItemLoading.setVisibility(View.VISIBLE);
 
@@ -449,39 +449,42 @@ public class StoreActivity extends AppCompatActivity {
                 try {
                     allItems.clear();
                     List<SuggestedItem> items = new ArrayList<>();
-                    JSONArray products = jsonObject.getJSONArray("results");
+                    JSONArray products = jsonObject.getJSONArray("docs");
                     for (int i = 0; i < Math.min(25, products.length()); ++i) {
                         JSONObject product = (JSONObject) products.get(i);
 
-                        String productName = product.getString("name");
-                        String productImageUrl = product.getString("image");
-                        String productDetailUrl = product.getString("url");
-                        String productPrice = product.getString("price_string");
+                        String productName = product.getString("product_title");
+                        String productImageUrl = product.getString("product_main_image_url");
+                        String productDetailUrl = product.getString("product_detail_url");
+                        String productCurrency = product.getString("app_sale_price_currency");
+                        String productPrice = productCurrency + product.getString("app_sale_price");
                         String temp = productPrice.replace(",","");
-                        Double productPriceValue = Double.parseDouble(temp);
+                        //Double productPriceValue = Double.parseDouble(temp);
                         String productRatings = null;
 
                         try {
-                            productRatings = String.valueOf(product.getInt("stars"));
+                            productRatings = product.getString("evaluate_rate");
                         } catch (Exception e) {
                             Log.d(TAG, "This is the exception" + e);
                         }
 
 
                         SuggestedItem item = new SuggestedItem(productName, productImageUrl, productPrice, productDetailUrl, null, productRatings);
-                        item.setProductPriceValue(productPriceValue);
+                        //item.setProductPriceValue(productPriceValue);
                         allItems.add(item);
+                        items.add(item);
+                        Log.d(TAG,"This is the name of the product item : " + productName);
 
-                        if (filterBasedOnPrice(item, lowerPrice, upperPrice)) {
-                            Log.d(TAG, "These are the lower and upper prices respectively " + lowerPrice + " " + upperPrice);
-                            items.add(item);
-                        } else{
-                            Log.d(TAG,"The filtered thing is returning false in this query");
-                        }
+//                        if (filterBasedOnPrice(item, lowerPrice, upperPrice)) {
+//                            Log.d(TAG, "These are the lower and upper prices respectively " + lowerPrice + " " + upperPrice);
+//                            items.add(item);
+//                        } else{
+//                            Log.d(TAG,"The filtered thing is returning false in this query");
+//                        }
 
                     }
 
-                    Collections.sort(items);
+                    //Collections.sort(items);
                     itemList.addAll(items);
                     adapter.notifyDataSetChanged();
                     pbStoreItemLoading.setVisibility(View.INVISIBLE);
@@ -506,35 +509,59 @@ public class StoreActivity extends AppCompatActivity {
     }
 
     private boolean filterBasedOnPrice(SuggestedItem product, int lowerBound, int upperBound) {
-        boolean fallsWithinRange = true;
         int itemPrice = 0;
-
-        try {
-            itemPrice = Integer.parseInt(product.getProductPrice().substring(1));
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
+        Log.d(TAG,"This is the value of the productPrice : " + product.getProductPrice());
+        try{
+            //Log.d(TAG,"This is the value of the product price : " + product.getProductPrice());
+            itemPrice = (int) Double.parseDouble(product.getProductPrice().substring(1));
+        } catch(Exception e){
+            // Do nothing
         }
 
-        Log.d(TAG, "" + itemPrice);
-        if (lowerBound > itemPrice) {
-            fallsWithinRange = false;
-        } else if (upperBound > 0 && upperBound < itemPrice) {
-            fallsWithinRange = false;
+        if (itemPrice >= lowerBound && itemPrice <= upperBound){
+            return true;
         }
-        if (upperBound < lowerBound) {
-            fallsWithinRange = false;
-        }
-
-
-        return fallsWithinRange;
+        return false;
+//        boolean fallsWithinRange = true;
+//        int itemPrice = 0;
+//
+//        try {
+//            itemPrice = Integer.parseInt(product.getProductPrice().substring(1));
+//
+//        } catch (Exception e) {
+//            Log.d(TAG, e.getMessage());
+//        }
+//
+//        Log.d(TAG, "" + itemPrice);
+//        if (lowerBound > itemPrice) {
+//            fallsWithinRange = false;
+//        } else if (upperBound > 0 && upperBound < itemPrice) {
+//            fallsWithinRange = false;
+//        }
+//        if (upperBound < lowerBound) {
+//            fallsWithinRange = false;
+//        }
+//
+//
+//        return fallsWithinRange;
     }
 
-    private void filterEntireArray(){
+    private void filterEntireArray(int upperVal, int lowerVal){
 
         List<SuggestedItem> temp = new ArrayList<>();
         for (int i = 0; i < allItems.size(); ++i){
             SuggestedItem suggestedItem = allItems.get(i);
-            if (filterBasedOnPrice(suggestedItem,lowerPrice,upperPrice)){
+            try{
+                String lowerPriceString = tvLowerPrice.getText().toString();
+                String upperPriceString = tvHigherPrice.getText().toString();
+                Log.d(TAG,"This is the value of the lowerPrice and upperPrice String : " + lowerPriceString + " " + upperPriceString);
+                lowerPrice = Integer.parseInt(lowerPriceString.substring(1));
+                upperPrice = Integer.parseInt(upperPriceString.substring(1));
+            } catch(Exception e){
+                // Do nothing
+            }
+            Log.d(TAG,"This is the value of the lower and upper prices respectively : " + lowerPrice + " "  + upperPrice);
+            if (filterBasedOnPrice(suggestedItem,upperVal,lowerVal)){
                 temp.add(suggestedItem);
             }
         }
@@ -565,6 +592,12 @@ public class StoreActivity extends AppCompatActivity {
                 try {
                     lowerPrice = Integer.parseInt(lowerBound);
                     upperPrice = Integer.parseInt(upperBound);
+                    Log.d(TAG,"This is the value of the lowerPrice : " + lowerPrice);
+                    Log.d(TAG,"This is the value of the upperPrice : " + upperPrice);
+
+                    if (position != 2){
+                        filterEntireArray(lowerPrice, upperPrice);
+                    }
 
                     if (lowerPrice < 0 || upperPrice < 0) {
                         Toast.makeText(StoreActivity.this, "Entries must be positive", Toast.LENGTH_SHORT);
@@ -573,9 +606,9 @@ public class StoreActivity extends AppCompatActivity {
                         tvLowerPrice.setText("Low : $" + Integer.toString(lowerPrice));
                         tvHigherPrice.setText("High : $" + Integer.toString(upperPrice));
                         Log.d(TAG,"The value of the position here is : " + position);
-                        if (position != 2){
-                            filterEntireArray();
-                        }
+//                        if (position != 2){
+//                            filterEntireArray(lowerPrice, upperPrice);
+//                        }
 
                     }
                 } catch (Exception e) {

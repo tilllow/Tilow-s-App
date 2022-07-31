@@ -37,6 +37,7 @@ import com.hfad.exploreshopping.Store;
 import com.hfad.exploreshopping.StoreActivity;
 import com.hfad.exploreshopping.SuggestedItem;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -272,10 +273,10 @@ public class HomeFragment extends Fragment {
 
         temp = new ArrayList<>();
         temp = Cache.getUserItemsViewed(userId);
-        Log.d(TAG,"This is the value returned after querying from the caching system : "+ temp);
         if (temp != null){
             Cache.updateUserToIdMap(userId);
             recentlyViewed.addAll(temp);
+            tvRecentlyViewed.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
             return;
         }
@@ -295,14 +296,6 @@ public class HomeFragment extends Fragment {
 
             } catch (Exception e) {
                 // TODO: Decide how to handle this exception later
-            }
-
-            if (i == itemsClicked.length() - 1){
-                Log.d(TAG,"This is the length of the array list : " + itemsClicked.length());
-                if (recentlyViewed.size() > 0){
-                    Cache.updateViewedItemsMap(userId,recentlyViewed);
-                }
-                Cache.updateUserToIdMap(userId);
             }
         }
 
@@ -344,6 +337,8 @@ public class HomeFragment extends Fragment {
                     });
                     if (recentlyViewed.size() > 0) {
                         tvRecentlyViewed.setVisibility(View.VISIBLE);
+                        Cache.updateUserToIdMap(ParseUser.getCurrentUser().getObjectId());
+                        Cache.updateViewedItemsMap(ParseUser.getCurrentUser().getObjectId(), recentlyViewed);
                     }
                 } else {
                     Log.i(TAG,"This is the error message obtained when trying to fetch the data from the database", e);

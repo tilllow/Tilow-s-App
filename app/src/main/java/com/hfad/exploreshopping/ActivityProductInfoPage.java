@@ -52,7 +52,7 @@ public class ActivityProductInfoPage extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("barcode", qrCode);
         RequestHeaders headers = new RequestHeaders();
-        headers.put("X-RapidAPI-Key", "27098ea2bcmshea7dcc3e9d5e7cep1a89c7jsn1a8d12751231");
+        headers.put("X-RapidAPI-Key", "7ab0ffb597msh1f03f00d4f935e1p1416e7jsn284030c97574");
         headers.put("X-RapidAPI-Host", "barcode-lookup.p.rapidapi.com");
 
         client.get(apiEndpoint, headers, params, new JsonHttpResponseHandler() {
